@@ -1,0 +1,1064 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F3227DB52BDC66DD0031D823 /* Communication.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3227DB42BDC66DD0031D823 /* Communication.swift */; };
+		F3227DB72BE0188A0031D823 /* WatchCommunication.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3227DB62BE0188A0031D823 /* WatchCommunication.swift */; };
+		F37CB3702BDB2D8800BECFEB /* targetZoneKeeperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB36F2BDB2D8800BECFEB /* targetZoneKeeperApp.swift */; };
+		F37CB3722BDB2D8800BECFEB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3712BDB2D8800BECFEB /* ContentView.swift */; };
+		F37CB3742BDB2D8900BECFEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F37CB3732BDB2D8900BECFEB /* Assets.xcassets */; };
+		F37CB3772BDB2D8900BECFEB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F37CB3762BDB2D8900BECFEB /* Preview Assets.xcassets */; };
+		F37CB3812BDB2D8900BECFEB /* targetZoneKeeperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3802BDB2D8900BECFEB /* targetZoneKeeperTests.swift */; };
+		F37CB38B2BDB2D8900BECFEB /* targetZoneKeeperUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB38A2BDB2D8900BECFEB /* targetZoneKeeperUITests.swift */; };
+		F37CB38D2BDB2D8900BECFEB /* targetZoneKeeperUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB38C2BDB2D8900BECFEB /* targetZoneKeeperUITestsLaunchTests.swift */; };
+		F37CB3932BDB2D8900BECFEB /* targetZoneKeeper Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = F37CB3922BDB2D8900BECFEB /* targetZoneKeeper Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F37CB3982BDB2D8900BECFEB /* targetZoneKeeperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3972BDB2D8900BECFEB /* targetZoneKeeperApp.swift */; };
+		F37CB39A2BDB2D8900BECFEB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3992BDB2D8900BECFEB /* ContentView.swift */; };
+		F37CB39C2BDB2D8A00BECFEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F37CB39B2BDB2D8A00BECFEB /* Assets.xcassets */; };
+		F37CB39F2BDB2D8A00BECFEB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F37CB39E2BDB2D8A00BECFEB /* Preview Assets.xcassets */; };
+		F37CB3A92BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3A82BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppTests.swift */; };
+		F37CB3B32BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3B22BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITests.swift */; };
+		F37CB3B52BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3B42BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITestsLaunchTests.swift */; };
+		F397B3AF2BE151F600765055 /* HeartRateData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F397B3AE2BE151F600765055 /* HeartRateData.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F37CB37D2BDB2D8900BECFEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F37CB3642BDB2D8800BECFEB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F37CB36B2BDB2D8800BECFEB;
+			remoteInfo = targetZoneKeeper;
+		};
+		F37CB3872BDB2D8900BECFEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F37CB3642BDB2D8800BECFEB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F37CB36B2BDB2D8800BECFEB;
+			remoteInfo = targetZoneKeeper;
+		};
+		F37CB3942BDB2D8900BECFEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F37CB3642BDB2D8800BECFEB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F37CB3912BDB2D8900BECFEB;
+			remoteInfo = "targetZoneKeeper Watch App";
+		};
+		F37CB3A52BDB2D8A00BECFEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F37CB3642BDB2D8800BECFEB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F37CB3912BDB2D8900BECFEB;
+			remoteInfo = "targetZoneKeeper Watch App";
+		};
+		F37CB3AF2BDB2D8A00BECFEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F37CB3642BDB2D8800BECFEB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F37CB3912BDB2D8900BECFEB;
+			remoteInfo = "targetZoneKeeper Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F37CB3BB2BDB2D8A00BECFEB /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				F37CB3932BDB2D8900BECFEB /* targetZoneKeeper Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F3227DB42BDC66DD0031D823 /* Communication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Communication.swift; sourceTree = "<group>"; };
+		F3227DB62BE0188A0031D823 /* WatchCommunication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCommunication.swift; sourceTree = "<group>"; };
+		F37CB36C2BDB2D8800BECFEB /* targetZoneKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = targetZoneKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F37CB36F2BDB2D8800BECFEB /* targetZoneKeeperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = targetZoneKeeperApp.swift; sourceTree = "<group>"; };
+		F37CB3712BDB2D8800BECFEB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F37CB3732BDB2D8900BECFEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F37CB3762BDB2D8900BECFEB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F37CB37C2BDB2D8900BECFEB /* targetZoneKeeperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = targetZoneKeeperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F37CB3802BDB2D8900BECFEB /* targetZoneKeeperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = targetZoneKeeperTests.swift; sourceTree = "<group>"; };
+		F37CB3862BDB2D8900BECFEB /* targetZoneKeeperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = targetZoneKeeperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F37CB38A2BDB2D8900BECFEB /* targetZoneKeeperUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = targetZoneKeeperUITests.swift; sourceTree = "<group>"; };
+		F37CB38C2BDB2D8900BECFEB /* targetZoneKeeperUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = targetZoneKeeperUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		F37CB3922BDB2D8900BECFEB /* targetZoneKeeper Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "targetZoneKeeper Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F37CB3972BDB2D8900BECFEB /* targetZoneKeeperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = targetZoneKeeperApp.swift; sourceTree = "<group>"; };
+		F37CB3992BDB2D8900BECFEB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F37CB39B2BDB2D8A00BECFEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F37CB39E2BDB2D8A00BECFEB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F37CB3A42BDB2D8A00BECFEB /* targetZoneKeeper Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "targetZoneKeeper Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F37CB3A82BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = targetZoneKeeper_Watch_AppTests.swift; sourceTree = "<group>"; };
+		F37CB3AE2BDB2D8A00BECFEB /* targetZoneKeeper Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "targetZoneKeeper Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F37CB3B22BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = targetZoneKeeper_Watch_AppUITests.swift; sourceTree = "<group>"; };
+		F37CB3B42BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = targetZoneKeeper_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		F38AD0272BE2A1E100354272 /* targetZoneKeeper Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "targetZoneKeeper Watch App.entitlements"; sourceTree = "<group>"; };
+		F38AD0282BE2A1F000354272 /* targetZoneKeeper-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "targetZoneKeeper-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
+		F397B3AE2BE151F600765055 /* HeartRateData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateData.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F37CB3692BDB2D8800BECFEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3792BDB2D8900BECFEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3832BDB2D8900BECFEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB38F2BDB2D8900BECFEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3A12BDB2D8A00BECFEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3AB2BDB2D8A00BECFEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F37CB3632BDB2D8800BECFEB = {
+			isa = PBXGroup;
+			children = (
+				F37CB36E2BDB2D8800BECFEB /* targetZoneKeeper */,
+				F37CB37F2BDB2D8900BECFEB /* targetZoneKeeperTests */,
+				F37CB3892BDB2D8900BECFEB /* targetZoneKeeperUITests */,
+				F37CB3962BDB2D8900BECFEB /* targetZoneKeeper Watch App */,
+				F37CB3A72BDB2D8A00BECFEB /* targetZoneKeeper Watch AppTests */,
+				F37CB3B12BDB2D8A00BECFEB /* targetZoneKeeper Watch AppUITests */,
+				F37CB36D2BDB2D8800BECFEB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F37CB36D2BDB2D8800BECFEB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F37CB36C2BDB2D8800BECFEB /* targetZoneKeeper.app */,
+				F37CB37C2BDB2D8900BECFEB /* targetZoneKeeperTests.xctest */,
+				F37CB3862BDB2D8900BECFEB /* targetZoneKeeperUITests.xctest */,
+				F37CB3922BDB2D8900BECFEB /* targetZoneKeeper Watch App.app */,
+				F37CB3A42BDB2D8A00BECFEB /* targetZoneKeeper Watch AppTests.xctest */,
+				F37CB3AE2BDB2D8A00BECFEB /* targetZoneKeeper Watch AppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F37CB36E2BDB2D8800BECFEB /* targetZoneKeeper */ = {
+			isa = PBXGroup;
+			children = (
+				F37CB36F2BDB2D8800BECFEB /* targetZoneKeeperApp.swift */,
+				F37CB3712BDB2D8800BECFEB /* ContentView.swift */,
+				F3227DB42BDC66DD0031D823 /* Communication.swift */,
+				F37CB3732BDB2D8900BECFEB /* Assets.xcassets */,
+				F37CB3752BDB2D8900BECFEB /* Preview Content */,
+			);
+			path = targetZoneKeeper;
+			sourceTree = "<group>";
+		};
+		F37CB3752BDB2D8900BECFEB /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				F37CB3762BDB2D8900BECFEB /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		F37CB37F2BDB2D8900BECFEB /* targetZoneKeeperTests */ = {
+			isa = PBXGroup;
+			children = (
+				F37CB3802BDB2D8900BECFEB /* targetZoneKeeperTests.swift */,
+			);
+			path = targetZoneKeeperTests;
+			sourceTree = "<group>";
+		};
+		F37CB3892BDB2D8900BECFEB /* targetZoneKeeperUITests */ = {
+			isa = PBXGroup;
+			children = (
+				F37CB38A2BDB2D8900BECFEB /* targetZoneKeeperUITests.swift */,
+				F37CB38C2BDB2D8900BECFEB /* targetZoneKeeperUITestsLaunchTests.swift */,
+			);
+			path = targetZoneKeeperUITests;
+			sourceTree = "<group>";
+		};
+		F37CB3962BDB2D8900BECFEB /* targetZoneKeeper Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				F38AD0282BE2A1F000354272 /* targetZoneKeeper-Watch-App-Info.plist */,
+				F38AD0272BE2A1E100354272 /* targetZoneKeeper Watch App.entitlements */,
+				F37CB3972BDB2D8900BECFEB /* targetZoneKeeperApp.swift */,
+				F37CB3992BDB2D8900BECFEB /* ContentView.swift */,
+				F3227DB62BE0188A0031D823 /* WatchCommunication.swift */,
+				F37CB39B2BDB2D8A00BECFEB /* Assets.xcassets */,
+				F37CB39D2BDB2D8A00BECFEB /* Preview Content */,
+				F397B3AE2BE151F600765055 /* HeartRateData.swift */,
+			);
+			path = "targetZoneKeeper Watch App";
+			sourceTree = "<group>";
+		};
+		F37CB39D2BDB2D8A00BECFEB /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				F37CB39E2BDB2D8A00BECFEB /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		F37CB3A72BDB2D8A00BECFEB /* targetZoneKeeper Watch AppTests */ = {
+			isa = PBXGroup;
+			children = (
+				F37CB3A82BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppTests.swift */,
+			);
+			path = "targetZoneKeeper Watch AppTests";
+			sourceTree = "<group>";
+		};
+		F37CB3B12BDB2D8A00BECFEB /* targetZoneKeeper Watch AppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				F37CB3B22BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITests.swift */,
+				F37CB3B42BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITestsLaunchTests.swift */,
+			);
+			path = "targetZoneKeeper Watch AppUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F37CB36B2BDB2D8800BECFEB /* targetZoneKeeper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F37CB3BC2BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeper" */;
+			buildPhases = (
+				F37CB3682BDB2D8800BECFEB /* Sources */,
+				F37CB3692BDB2D8800BECFEB /* Frameworks */,
+				F37CB36A2BDB2D8800BECFEB /* Resources */,
+				F37CB3BB2BDB2D8A00BECFEB /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F37CB3952BDB2D8900BECFEB /* PBXTargetDependency */,
+			);
+			name = targetZoneKeeper;
+			productName = targetZoneKeeper;
+			productReference = F37CB36C2BDB2D8800BECFEB /* targetZoneKeeper.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F37CB37B2BDB2D8900BECFEB /* targetZoneKeeperTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F37CB3BF2BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeperTests" */;
+			buildPhases = (
+				F37CB3782BDB2D8900BECFEB /* Sources */,
+				F37CB3792BDB2D8900BECFEB /* Frameworks */,
+				F37CB37A2BDB2D8900BECFEB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F37CB37E2BDB2D8900BECFEB /* PBXTargetDependency */,
+			);
+			name = targetZoneKeeperTests;
+			productName = targetZoneKeeperTests;
+			productReference = F37CB37C2BDB2D8900BECFEB /* targetZoneKeeperTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F37CB3852BDB2D8900BECFEB /* targetZoneKeeperUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F37CB3C22BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeperUITests" */;
+			buildPhases = (
+				F37CB3822BDB2D8900BECFEB /* Sources */,
+				F37CB3832BDB2D8900BECFEB /* Frameworks */,
+				F37CB3842BDB2D8900BECFEB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F37CB3882BDB2D8900BECFEB /* PBXTargetDependency */,
+			);
+			name = targetZoneKeeperUITests;
+			productName = targetZoneKeeperUITests;
+			productReference = F37CB3862BDB2D8900BECFEB /* targetZoneKeeperUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		F37CB3912BDB2D8900BECFEB /* targetZoneKeeper Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F37CB3B82BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeper Watch App" */;
+			buildPhases = (
+				F37CB38E2BDB2D8900BECFEB /* Sources */,
+				F37CB38F2BDB2D8900BECFEB /* Frameworks */,
+				F37CB3902BDB2D8900BECFEB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "targetZoneKeeper Watch App";
+			productName = "targetZoneKeeper Watch App";
+			productReference = F37CB3922BDB2D8900BECFEB /* targetZoneKeeper Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F37CB3A32BDB2D8A00BECFEB /* targetZoneKeeper Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F37CB3C52BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeper Watch AppTests" */;
+			buildPhases = (
+				F37CB3A02BDB2D8A00BECFEB /* Sources */,
+				F37CB3A12BDB2D8A00BECFEB /* Frameworks */,
+				F37CB3A22BDB2D8A00BECFEB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F37CB3A62BDB2D8A00BECFEB /* PBXTargetDependency */,
+			);
+			name = "targetZoneKeeper Watch AppTests";
+			productName = "targetZoneKeeper Watch AppTests";
+			productReference = F37CB3A42BDB2D8A00BECFEB /* targetZoneKeeper Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F37CB3AD2BDB2D8A00BECFEB /* targetZoneKeeper Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F37CB3C82BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeper Watch AppUITests" */;
+			buildPhases = (
+				F37CB3AA2BDB2D8A00BECFEB /* Sources */,
+				F37CB3AB2BDB2D8A00BECFEB /* Frameworks */,
+				F37CB3AC2BDB2D8A00BECFEB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F37CB3B02BDB2D8A00BECFEB /* PBXTargetDependency */,
+			);
+			name = "targetZoneKeeper Watch AppUITests";
+			productName = "targetZoneKeeper Watch AppUITests";
+			productReference = F37CB3AE2BDB2D8A00BECFEB /* targetZoneKeeper Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F37CB3642BDB2D8800BECFEB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					F37CB36B2BDB2D8800BECFEB = {
+						CreatedOnToolsVersion = 15.3;
+					};
+					F37CB37B2BDB2D8900BECFEB = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = F37CB36B2BDB2D8800BECFEB;
+					};
+					F37CB3852BDB2D8900BECFEB = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = F37CB36B2BDB2D8800BECFEB;
+					};
+					F37CB3912BDB2D8900BECFEB = {
+						CreatedOnToolsVersion = 15.3;
+					};
+					F37CB3A32BDB2D8A00BECFEB = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = F37CB3912BDB2D8900BECFEB;
+					};
+					F37CB3AD2BDB2D8A00BECFEB = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = F37CB3912BDB2D8900BECFEB;
+					};
+				};
+			};
+			buildConfigurationList = F37CB3672BDB2D8800BECFEB /* Build configuration list for PBXProject "targetZoneKeeper" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F37CB3632BDB2D8800BECFEB;
+			productRefGroup = F37CB36D2BDB2D8800BECFEB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F37CB36B2BDB2D8800BECFEB /* targetZoneKeeper */,
+				F37CB37B2BDB2D8900BECFEB /* targetZoneKeeperTests */,
+				F37CB3852BDB2D8900BECFEB /* targetZoneKeeperUITests */,
+				F37CB3912BDB2D8900BECFEB /* targetZoneKeeper Watch App */,
+				F37CB3A32BDB2D8A00BECFEB /* targetZoneKeeper Watch AppTests */,
+				F37CB3AD2BDB2D8A00BECFEB /* targetZoneKeeper Watch AppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F37CB36A2BDB2D8800BECFEB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F37CB3772BDB2D8900BECFEB /* Preview Assets.xcassets in Resources */,
+				F37CB3742BDB2D8900BECFEB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB37A2BDB2D8900BECFEB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3842BDB2D8900BECFEB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3902BDB2D8900BECFEB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F37CB39F2BDB2D8A00BECFEB /* Preview Assets.xcassets in Resources */,
+				F37CB39C2BDB2D8A00BECFEB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3A22BDB2D8A00BECFEB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3AC2BDB2D8A00BECFEB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F37CB3682BDB2D8800BECFEB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F37CB3722BDB2D8800BECFEB /* ContentView.swift in Sources */,
+				F37CB3702BDB2D8800BECFEB /* targetZoneKeeperApp.swift in Sources */,
+				F3227DB52BDC66DD0031D823 /* Communication.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3782BDB2D8900BECFEB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F37CB3812BDB2D8900BECFEB /* targetZoneKeeperTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3822BDB2D8900BECFEB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F37CB38B2BDB2D8900BECFEB /* targetZoneKeeperUITests.swift in Sources */,
+				F37CB38D2BDB2D8900BECFEB /* targetZoneKeeperUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB38E2BDB2D8900BECFEB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F397B3AF2BE151F600765055 /* HeartRateData.swift in Sources */,
+				F3227DB72BE0188A0031D823 /* WatchCommunication.swift in Sources */,
+				F37CB39A2BDB2D8900BECFEB /* ContentView.swift in Sources */,
+				F37CB3982BDB2D8900BECFEB /* targetZoneKeeperApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3A02BDB2D8A00BECFEB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F37CB3A92BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F37CB3AA2BDB2D8A00BECFEB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F37CB3B32BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITests.swift in Sources */,
+				F37CB3B52BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F37CB37E2BDB2D8900BECFEB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F37CB36B2BDB2D8800BECFEB /* targetZoneKeeper */;
+			targetProxy = F37CB37D2BDB2D8900BECFEB /* PBXContainerItemProxy */;
+		};
+		F37CB3882BDB2D8900BECFEB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F37CB36B2BDB2D8800BECFEB /* targetZoneKeeper */;
+			targetProxy = F37CB3872BDB2D8900BECFEB /* PBXContainerItemProxy */;
+		};
+		F37CB3952BDB2D8900BECFEB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F37CB3912BDB2D8900BECFEB /* targetZoneKeeper Watch App */;
+			targetProxy = F37CB3942BDB2D8900BECFEB /* PBXContainerItemProxy */;
+		};
+		F37CB3A62BDB2D8A00BECFEB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F37CB3912BDB2D8900BECFEB /* targetZoneKeeper Watch App */;
+			targetProxy = F37CB3A52BDB2D8A00BECFEB /* PBXContainerItemProxy */;
+		};
+		F37CB3B02BDB2D8A00BECFEB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F37CB3912BDB2D8900BECFEB /* targetZoneKeeper Watch App */;
+			targetProxy = F37CB3AF2BDB2D8A00BECFEB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		F37CB3B62BDB2D8A00BECFEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				WATCHOS_DEPLOYMENT_TARGET = 10.3;
+			};
+			name = Debug;
+		};
+		F37CB3B72BDB2D8A00BECFEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				WATCHOS_DEPLOYMENT_TARGET = 10.3;
+			};
+			name = Release;
+		};
+		F37CB3B92BDB2D8A00BECFEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "targetZoneKeeper Watch App/targetZoneKeeper Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"targetZoneKeeper Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "targetZoneKeeper-Watch-App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = targetZoneKeeper;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your heart rate data is used to notify you if you are in target heart rate zone during workout";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your heart rate data is used to notify you if you are in target heart rate zone during workout";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = Margo.targetZoneKeeper;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeper.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.3;
+			};
+			name = Debug;
+		};
+		F37CB3BA2BDB2D8A00BECFEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "targetZoneKeeper Watch App/targetZoneKeeper Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"targetZoneKeeper Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "targetZoneKeeper-Watch-App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = targetZoneKeeper;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your heart rate data is used to notify you if you are in target heart rate zone during workout";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your heart rate data is used to notify you if you are in target heart rate zone during workout";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = Margo.targetZoneKeeper;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeper.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.3;
+			};
+			name = Release;
+		};
+		F37CB3BD2BDB2D8A00BECFEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"targetZoneKeeper/Preview Content\"";
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = targetZoneKeeper;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		F37CB3BE2BDB2D8A00BECFEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"targetZoneKeeper/Preview Content\"";
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = targetZoneKeeper;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F37CB3C02BDB2D8A00BECFEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeperTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/targetZoneKeeper.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/targetZoneKeeper";
+			};
+			name = Debug;
+		};
+		F37CB3C12BDB2D8A00BECFEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeperTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/targetZoneKeeper.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/targetZoneKeeper";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F37CB3C32BDB2D8A00BECFEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeperUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = targetZoneKeeper;
+			};
+			name = Debug;
+		};
+		F37CB3C42BDB2D8A00BECFEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeperUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = targetZoneKeeper;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F37CB3C62BDB2D8A00BECFEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Margo.targetZoneKeeper-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/targetZoneKeeper Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/targetZoneKeeper Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.4;
+			};
+			name = Debug;
+		};
+		F37CB3C72BDB2D8A00BECFEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Margo.targetZoneKeeper-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/targetZoneKeeper Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/targetZoneKeeper Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.4;
+			};
+			name = Release;
+		};
+		F37CB3C92BDB2D8A00BECFEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Margo.targetZoneKeeper-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "targetZoneKeeper Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.4;
+			};
+			name = Debug;
+		};
+		F37CB3CA2BDB2D8A00BECFEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Margo.targetZoneKeeper-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "targetZoneKeeper Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.4;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F37CB3672BDB2D8800BECFEB /* Build configuration list for PBXProject "targetZoneKeeper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F37CB3B62BDB2D8A00BECFEB /* Debug */,
+				F37CB3B72BDB2D8A00BECFEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F37CB3B82BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeper Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F37CB3B92BDB2D8A00BECFEB /* Debug */,
+				F37CB3BA2BDB2D8A00BECFEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F37CB3BC2BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F37CB3BD2BDB2D8A00BECFEB /* Debug */,
+				F37CB3BE2BDB2D8A00BECFEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F37CB3BF2BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeperTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F37CB3C02BDB2D8A00BECFEB /* Debug */,
+				F37CB3C12BDB2D8A00BECFEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F37CB3C22BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeperUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F37CB3C32BDB2D8A00BECFEB /* Debug */,
+				F37CB3C42BDB2D8A00BECFEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F37CB3C52BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeper Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F37CB3C62BDB2D8A00BECFEB /* Debug */,
+				F37CB3C72BDB2D8A00BECFEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F37CB3C82BDB2D8A00BECFEB /* Build configuration list for PBXNativeTarget "targetZoneKeeper Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F37CB3C92BDB2D8A00BECFEB /* Debug */,
+				F37CB3CA2BDB2D8A00BECFEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F37CB3642BDB2D8800BECFEB /* Project object */;
+}
