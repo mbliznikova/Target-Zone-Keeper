@@ -30,6 +30,11 @@ class HeartRateData: ObservableObject {
     
     var message: String = ""
     var color: Color = Color.black
+
+    var belowZoneColor: Color = Color(.sRGB, red: 0.96, green: 0.8, blue: 0.27)
+    var inZoneColor: Color = Color(.sRGB, red: 0.39, green: 0.76, blue: 0.4)
+    var aboveZoneColor: Color = Color(.sRGB, red: 0.15, green: 0.3, blue: 1.5)
+    var inZoneHaptic: Bool = false
     
     init() {
         print("Initializing Heart Data")
@@ -92,7 +97,7 @@ class HeartRateData: ObservableObject {
         if heartRate < lowerBoundary {
             print("Outside the target zone: too slow")
             message = "FASTER"
-            color = .yellow
+            color = belowZoneColor
             WKInterfaceDevice.current().play(.success)
             usleep(250_000)
             WKInterfaceDevice.current().play(.success)
@@ -103,14 +108,19 @@ class HeartRateData: ObservableObject {
         } else if heartRate > upperBoundary {
             print("Outside the target zone: too fast")
             message = "SLOWER"
-            color = .blue
+            color = aboveZoneColor
             WKInterfaceDevice.current().play(.stop)
             usleep(300_000)
             WKInterfaceDevice.current().play(.stop)
         } else {
             print("Inside the target zone")
             message = "THAT'S IT!"
-            color = .green
+            color = inZoneColor
+            if inZoneHaptic {
+                WKInterfaceDevice.current().play(.success)
+                usleep(250_000)
+                WKInterfaceDevice.current().play(.success)
+            }
         }
     }
     
