@@ -17,11 +17,13 @@ class HeartRateData: ObservableObject {
     @Published var lowerBoundary = 136
     @Published var upperBoundary = 148
     @Published var isWorkoutStarted = false
-    
-    var phoneData = WatchCommunication()
-    
+
+    @Published var isTestHaptic = false
+
+    var phoneData = WatchCommunication.shared
+
     var hkObject: HKHealthStore?
-    
+
     let workoutConfig = HKWorkoutConfiguration()
     var workoutSession: HKWorkoutSession? = nil
     var workoutBuilder: HKLiveWorkoutBuilder? = nil
@@ -36,6 +38,10 @@ class HeartRateData: ObservableObject {
     var aboveZoneColor: Color = Color(.sRGB, red: 0.15, green: 0.3, blue: 1.5)
     var inZoneHaptic: Bool = false
     
+    var fasterAlert: WKHapticType = .success
+    var inZoneAlert: WKHapticType = .notification
+    var slowerAlert: WKHapticType = .stop
+
     init() {
         print("Initializing Heart Data")
         phoneData.heartRate = self
@@ -77,7 +83,7 @@ class HeartRateData: ObservableObject {
     func getHeartRate() {
         print("GET HEART RATE METHOD - Getting heart rate \(Date())")
         
-        let predicate = HKQuery.predicateForSamples(withStart: Date() - 8, end: Date())
+        let predicate = HKQuery.predicateForSamples(withStart: Date() - 6, end: Date())
         let sortDescriptor = [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
         
         let heartRateQuery = HKSampleQuery(sampleType: HKQuantityType(.heartRate), predicate: predicate, limit: 1, sortDescriptors: sortDescriptor) {(query, result, error) in
@@ -98,34 +104,34 @@ class HeartRateData: ObservableObject {
             print("Outside the target zone: too slow")
             message = "FASTER"
             color = belowZoneColor
-            WKInterfaceDevice.current().play(.success)
+            WKInterfaceDevice.current().play(fasterAlert)
             usleep(250_000)
-            WKInterfaceDevice.current().play(.success)
+            WKInterfaceDevice.current().play(fasterAlert)
             usleep(250_000)
-            WKInterfaceDevice.current().play(.success)
+            WKInterfaceDevice.current().play(fasterAlert)
             usleep(250_000)
-            WKInterfaceDevice.current().play(.success)
+            WKInterfaceDevice.current().play(fasterAlert)
         } else if heartRate > upperBoundary {
             print("Outside the target zone: too fast")
             message = "SLOWER"
             color = aboveZoneColor
-            WKInterfaceDevice.current().play(.stop)
+            WKInterfaceDevice.current().play(slowerAlert)
             usleep(300_000)
-            WKInterfaceDevice.current().play(.stop)
+            WKInterfaceDevice.current().play(slowerAlert)
         } else {
             print("Inside the target zone")
             message = "THAT'S IT!"
             color = inZoneColor
             if inZoneHaptic {
-                WKInterfaceDevice.current().play(.success)
+                WKInterfaceDevice.current().play(inZoneAlert)
                 usleep(250_000)
-                WKInterfaceDevice.current().play(.success)
+                WKInterfaceDevice.current().play(inZoneAlert)
             }
         }
     }
     
     func startTimer() {
-        self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) {(timer) in
+        self.timer = Timer.scheduledTimer(withTimeInterval: 4, repeats: true) {(timer) in
             Task {
                 await self.getHeartRate()
             }

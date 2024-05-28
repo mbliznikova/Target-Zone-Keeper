@@ -8,14 +8,19 @@
 import SwiftUI
 import Combine
 
+enum ViewName {
+    case start, settings
+}
+
 struct ContentView: View {
     
-    @State private var currentView: String = "Start"
+    @State private var currentView = ViewName.start
 
     var body: some View {
-        if currentView == "Start" {
+        switch currentView {
+        case .start:
             TargetZoneView(currentView: $currentView)
-        } else {
+        case .settings:
             SettingsView(currentView: $currentView)
         }
     }
@@ -23,9 +28,7 @@ struct ContentView: View {
 
 struct TargetZoneView: View {
 
-    @Binding var currentView: String
-
-    var communication = Communication()
+    @Binding var currentView: ViewName
     
     @State private var lowerBoundary: Int = 60
     @State private var upperBoundary: Int = 90
@@ -52,7 +55,7 @@ struct TargetZoneView: View {
                     }
                 })
                 .onChange(of: lowerBoundary) { _, _ in
-                    communication.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary])
+                    Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary])
                 }
 
             }
@@ -74,7 +77,7 @@ struct TargetZoneView: View {
                 //                    }
                 //                })
                 .onChange(of: upperBoundary) { _, _ in
-                    communication.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary])
+                    Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary])
                 }
             }
             .padding()
@@ -84,11 +87,11 @@ struct TargetZoneView: View {
         VStack {
             // TODO: check if annother device is reachable and session is active
             Button("Start", action: {
-                communication.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary, "workoutStarted": true])
+                Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary, "workoutStarted": true])
             })
         }
 
-        Button("Settings", action: {currentView = "Settings"})
+        Button("Settings", action: {currentView = .settings})
     }
 }
 
@@ -96,10 +99,9 @@ struct SettingsView: View {
 
     @Environment(\.self) var environment
 
-    var communication = Communication()
     @State var settings = Settings()
 
-    @Binding var currentView: String
+    @Binding var currentView: ViewName
 
     @State private var settingsInZoneHaptics: Bool = false
 
@@ -107,85 +109,164 @@ struct SettingsView: View {
     @State private var inZoneColor = Color(red: 0.39, green: 0.76, blue: 0.4)
     @State private var aboveZoneColor = Color(red: 0.15, green: 0.3, blue: 1.5)
 
-    @State private var fasterHaptic: String = "Success"
-    @State private var slowerHaptic: String = "Stop"
-    @State private var inZoneHaptic: String = "Notification"
+    @State private var fasterHaptic: Haptics.HapticsTypes = .success
+    @State private var inZoneHaptic: Haptics.HapticsTypes = .notification
+    @State private var slowerHaptic: Haptics.HapticsTypes = .stop
 
     var body: some View {
-        Text("Select application's settings")
-            .font(.title)
-            .fontWeight(.heavy)
-   
-        Divider()
-        Text("Haptics")
-            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-        VStack {
+        NavigationStack(root: {
+
             VStack {
-                HStack {
-                    Text("Below target zone")
-                    Picker("Below zone", selection: $fasterHaptic) {
-                    }
+
+                Form {
+                    Section(header: Text("Haptics"), content: {
+                        NavigationLink(
+                            destination: HapticTypesView(
+                                zoneAlert: $fasterHaptic,
+                                onSelect: {
+                                    settings.fasterHaptic = fasterHaptic
+                                    settings.isTestHaptic = true
+                                    settings.currentHaptic = fasterHaptic
+                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                }, onListDisappear: {
+                                    settings.isTestHaptic = false
+                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                }
+                            )
+                        )
+                        {
+                            HStack {
+                                Text("Below zone alert")
+                                Spacer()
+                                Text("\(fasterHaptic.rawValue)")
+                            }
+                        }
+
+                        NavigationLink(
+                            destination: HapticTypesView(
+                                zoneAlert: $inZoneHaptic,
+                                onSelect: {
+                                    settings.inZoneHaptic = inZoneHaptic
+                                    settings.isTestHaptic = true
+                                    settings.currentHaptic = inZoneHaptic
+                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                }, onListDisappear: {
+                                    settings.isTestHaptic = false
+                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                }
+                            )
+                        ) {
+                            HStack {
+                                Text("In zone alert")
+                                Spacer()
+                                Text("\(inZoneHaptic.rawValue)")
+                            }
+                        }
+
+                        NavigationLink(
+                            destination: HapticTypesView(
+                                zoneAlert: $slowerHaptic,
+                                onSelect: {
+                                    settings.slowerHaptic = slowerHaptic
+                                    settings.isTestHaptic = true
+                                    settings.currentHaptic = slowerHaptic
+                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                }, onListDisappear: {
+                                    settings.isTestHaptic = false
+                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                }
+                            )
+                        ) {
+                            HStack {
+                                Text("Above zone alert")
+                                Spacer()
+                                Text("\(slowerHaptic.rawValue)")
+                            }
+                        }
+
+                            Toggle("In-zone haptic alerts?", isOn: $settings.ifInZoneHaptics)
+                                .onChange(of: settings.ifInZoneHaptics) {
+                                    let dictUserInfo = settings.toDictionary()
+                                    Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
+                                }
+                    })
+
+                    Section(header: Text("Colors"), content: {
+                        HStack { ColorPicker("Below target zone", selection: $belowZoneColor)
+                                .onChange(of: belowZoneColor) {
+                                    let resolvedColor = belowZoneColor.resolve(in: environment)
+                                    settings.belowZoneColor.red = Double(resolvedColor.red)
+                                    settings.belowZoneColor.green = Double(resolvedColor.green)
+                                    settings.belowZoneColor.blue = Double(resolvedColor.blue)
+                                    settings.belowZoneColor.opacity = Double(resolvedColor.opacity)
+                                    let dictUserInfo = settings.toDictionary()
+                                    Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
+                                }
+                        }
+                        HStack {
+                            ColorPicker("In target zone", selection: $inZoneColor)
+                                .onChange(of: inZoneColor) {
+                                    let resolvedColor = inZoneColor.resolve(in: environment)
+                                    settings.inZoneColor.red = Double(resolvedColor.red)
+                                    settings.inZoneColor.green = Double(resolvedColor.green)
+                                    settings.inZoneColor.blue = Double(resolvedColor.blue)
+                                    settings.inZoneColor.opacity = Double(resolvedColor.opacity)
+                                    let dictUserInfo = settings.toDictionary()
+                                    Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
+                                }
+                        }
+                        HStack {
+                            ColorPicker("Above target zone", selection: $aboveZoneColor)
+                                .onChange(of: aboveZoneColor) {
+                                    let resolvedColor = aboveZoneColor.resolve(in: environment)
+                                    settings.aboveZoneColor.red = Double(resolvedColor.red)
+                                    settings.aboveZoneColor.green = Double(resolvedColor.green)
+                                    settings.aboveZoneColor.blue = Double(resolvedColor.blue)
+                                    settings.aboveZoneColor.opacity = Double(resolvedColor.opacity)
+                                    let dictUserInfo = settings.toDictionary()
+                                    Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
+                                }
+                        }
+                        Button("Back", action: {currentView = .start})
+                    })
                 }
-                HStack {
-                    Text("Above target zone")
-                    Picker("Below zone", selection: $slowerHaptic) {
-                    }
-                }
-                HStack {
-                    Text("In zone (if switched on)")
-                    Picker("Below zone", selection: $inZoneHaptic) {
-                    }
-                }
+                .navigationTitle("Settings")
             }
+            .frame(width: .infinity, height: 500, alignment: .center)
+        })
 
-            Divider()
-            Toggle("In-zone haptics?", isOn: $settings.ifInZoneHaptics)
-                .onChange(of: settings.ifInZoneHaptics) {
-                    let dictUserInfo = settings.makeDictionaryToTransfer()
-                    communication.sendToWatch(data: ["Settings" : dictUserInfo])
+    }
+
+    struct HapticTypesView: View {
+
+        @Binding var zoneAlert: Haptics.HapticsTypes
+        var onSelect: () -> Void
+        var onListDisappear: () -> Void
+        @Environment(\.colorScheme) var colorScheme
+
+        var body: some View {
+                Form {
+                    ForEach(Haptics.HapticsTypes.allCases) { haptic in
+                        Button(action: {
+                            zoneAlert = haptic
+                            onSelect()
+                        })
+                        {
+                            HStack {
+                                if zoneAlert == haptic {
+                                    Image(systemName: "checkmark")
+                                }
+                                let textColor: Color = colorScheme == .dark ? Color.white : Color.black
+                                Text(haptic.rawValue)
+                                    .foregroundStyle(textColor)
+                            }
+                        }
+                    }
+                }
+                .onDisappear() {
+                    onListDisappear()
                 }
         }
-
-        Divider()
-        VStack {
-            Text("Colors")
-                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-            ColorPicker("Below target zone", selection: $belowZoneColor)
-                .onChange(of: belowZoneColor) {
-                    let resolvedColor = belowZoneColor.resolve(in: environment)
-                    settings.belowZoneColor["red"] = resolvedColor.red
-                    settings.belowZoneColor["green"] = resolvedColor.green
-                    settings.belowZoneColor["blue"] = resolvedColor.blue
-                    settings.belowZoneColor["opacity"] = resolvedColor.opacity
-                    let dictUserInfo = settings.makeDictionaryToTransfer()
-                    communication.sendToWatch(data: ["Settings" : dictUserInfo])
-                }
-            ColorPicker("In target zone", selection: $inZoneColor)
-                .onChange(of: inZoneColor) {
-                    let resolvedColor = inZoneColor.resolve(in: environment)
-                    settings.inZoneColor["red"] = resolvedColor.red
-                    settings.inZoneColor["green"] = resolvedColor.green
-                    settings.inZoneColor["blue"] = resolvedColor.blue
-                    settings.inZoneColor["opacity"] = resolvedColor.opacity
-                    let dictUserInfo = settings.makeDictionaryToTransfer()
-                    communication.sendToWatch(data: ["Settings" : dictUserInfo])
-                }
-            ColorPicker("Above target zone", selection: $aboveZoneColor)
-                .onChange(of: aboveZoneColor) {
-                    let resolvedColor = aboveZoneColor.resolve(in: environment)
-                    settings.aboveZoneColor["red"] = resolvedColor.red
-                    settings.aboveZoneColor["green"] = resolvedColor.green
-                    settings.aboveZoneColor["blue"] = resolvedColor.blue
-                    settings.aboveZoneColor["opacity"] = resolvedColor.opacity
-                    let dictUserInfo = settings.makeDictionaryToTransfer()
-                    communication.sendToWatch(data: ["Settings" : dictUserInfo])
-                }
-
-        }
-
-        Divider()
-  
-        Button("Back", action: {currentView = "Start"})
     }
 
 }

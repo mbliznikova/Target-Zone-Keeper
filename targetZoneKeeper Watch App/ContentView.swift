@@ -10,28 +10,53 @@ import SwiftUI
 struct ContentView: View {
     
     @ObservedObject var heartRateDataModel: HeartRateData
+    @ObservedObject var settingsDemonstration: SettingsDemonstration
+
     @State var currentView: String = "welcome"
-    
+
     @State var isWorkoutStarted: Bool = false
-    
+
     var body: some View {
-        
+
         switch currentView {
         case "welcome":
             if !heartRateDataModel.isWorkoutStarted {
-                VStack {
-                    Text("Target Zone")
-                        .foregroundStyle(.blue)
-                    Text("\(heartRateDataModel.lowerBoundary) - \(heartRateDataModel.upperBoundary)\n\n")
-                        .foregroundStyle(.blue)
-                    Button("START") {
-                        currentView = "main"
+                if !heartRateDataModel.isTestHaptic {
+                    VStack {
+                        Text("Target Zone")
+                            .foregroundStyle(.blue)
+                        Text("\(heartRateDataModel.lowerBoundary) - \(heartRateDataModel.upperBoundary)\n\n")
+                            .foregroundStyle(.blue)
+                        Button("START") {
+                            currentView = "main"
+                        }
                     }
+                    .padding()
                 }
-                .padding()
+                else {
+                    VStack {
+                        Text("\(settingsDemonstration.currentHapticName)")
+                            .onChange(of: settingsDemonstration.currentHaptic, initial: true) {
+                                WKInterfaceDevice.current().play(settingsDemonstration.currentHaptic)
+                            }
+                        Button("Try") {
+                            WKInterfaceDevice.current().play(heartRateDataModel.fasterAlert)
+                        }
+                    }
+
+                }
             } else {
                 Text("Measuring heart rate...")
                     .onAppear(perform: {currentView = "main"})
+            }
+        case "test":
+            VStack {
+                HStack {
+                    Text("Demonstarting")
+                }
+                Button("Back") {
+                    currentView = "welcome"
+                }
             }
         case "main":
             VStack{
@@ -105,5 +130,5 @@ struct ContentView: View {
 
 
 #Preview {
-    ContentView(heartRateDataModel: HeartRateData())
+    ContentView(heartRateDataModel: HeartRateData(), settingsDemonstration: SettingsDemonstration())
 }

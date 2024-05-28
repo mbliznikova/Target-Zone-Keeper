@@ -9,6 +9,8 @@ import Foundation
 import WatchConnectivity
 
 class Communication: NSObject, WCSessionDelegate, ObservableObject {
+    static let shared = Communication()
+
     @Published var mySession: WCSession
     
     func sessionDidBecomeInactive(_ session: WCSession) {
@@ -45,7 +47,7 @@ class Communication: NSObject, WCSessionDelegate, ObservableObject {
     
     
 
-    override init() {
+    private override init() {
         self.mySession = WCSession.default
         super.init()
         assert(WCSession.isSupported(), "WCSsession should be supported!")
@@ -55,11 +57,12 @@ class Communication: NSObject, WCSessionDelegate, ObservableObject {
     }
     
     func sendToWatch(data: [String: Any]) {
+        mySession.transferUserInfo(data)
         print("Communication - sendToWatch(). Session is activated: \(mySession.activationState == WCSessionActivationState.activated). Session reachable: \(mySession.isReachable)")
         Task { @MainActor in
         if mySession.activationState == WCSessionActivationState.activated {
             print("The WCSession is activate, starting transfer")
-            mySession.transferUserInfo(data)
+//            print("SENDING DATA: \(data)")
             
         } else {
             print("The WCSession is not activated or is not reachable")

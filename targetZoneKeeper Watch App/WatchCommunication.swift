@@ -10,23 +10,27 @@ import WatchConnectivity
 import SwiftUI
 
 class WatchCommunication: NSObject, WCSessionDelegate {
-    
+
+    static let shared = WatchCommunication()
+
     var heartRate: HeartRateData? = nil
-    
+
+    var settingsDemonstration: SettingsDemonstration? = nil
+
     var mySession: WCSession
-    
-    
+
     // Session activation
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {
         if error != nil {
             print("WatchCommunication: the error is \(String(describing: error))")
         }
     }
-    
+
     // This method is triggered by receiving a UserInfo
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any]) {
         print("Getting data from the phone...")
         print("userInfo is \(userInfo)")
+        //TODO: Pass settings as an object into HeartRateData, make it re-render after settings change
         Task { @MainActor in
             if userInfo["lower"] != nil {
                 let tempLower = userInfo["lower"] as! Int?
@@ -37,23 +41,39 @@ class WatchCommunication: NSObject, WCSessionDelegate {
                 self.heartRate?.isWorkoutStarted = tempIsWorkout ?? false
             } else {
                 if userInfo["Settings"] != nil {
-                    let tempSettings = userInfo["Settings"] as! Dictionary<String, Any>?
-
-                    let tempInZoneHaptic = tempSettings!["InZoneHaptics"] as! Bool?
-
-                    let tempBelowZoneColor = tempSettings!["belowZoneColor"] as! [String: Float]?
-                    let tempInZoneColor = tempSettings!["inZoneColor"] as! [String: Float]?
-                    let tempAboveZoneColor = tempSettings!["aboveZoneColor"] as! [String: Float]?
-
-                    self.heartRate?.inZoneHaptic = (tempInZoneHaptic != nil ? tempInZoneHaptic : self.heartRate?.inZoneHaptic)!
-
-                    self.heartRate?.belowZoneColor = Color(.sRGB, red: Double(tempBelowZoneColor!["red"]!), green: Double(tempBelowZoneColor!["green"]!), blue: Double(tempBelowZoneColor!["blue"]!))
-                    self.heartRate?.inZoneColor = Color(.sRGB, red: Double(tempInZoneColor!["red"]!), green: Double(tempInZoneColor!["green"]!), blue: Double(tempInZoneColor!["blue"]!))
-                    self.heartRate?.aboveZoneColor = Color(.sRGB, red: Double(tempAboveZoneColor!["red"]!), green: Double(tempAboveZoneColor!["green"]!), blue: Double(tempAboveZoneColor!["blue"]!))
+                    //TODO: Check if `... as? [String: Any]` evaluate to nil, and write to log if it is
+                    let settings = Settings.fromDictionary(input: userInfo["Settings"] as? [String: Any] ?? [:])
+                    self.heartRate?.inZoneHaptic = settings.ifInZoneHaptics
+                    self.heartRate?.belowZoneColor = settings.belowZoneColor.toStandardColor()
+                    self.heartRate?.inZoneColor = settings.inZoneColor.toStandardColor()
+                    self.heartRate?.aboveZoneColor = settings.aboveZoneColor.toStandardColor()
+                    self.heartRate?.fasterAlert = translateHaptic(haptic: settings.fasterHaptic)
+                    self.heartRate?.inZoneAlert = translateHaptic(haptic: settings.inZoneHaptic)
+                    self.heartRate?.slowerAlert = translateHaptic(haptic: settings.slowerHaptic)
+                    self.heartRate?.isTestHaptic = settings.isTestHaptic
+                    self.settingsDemonstration?.currentHaptic = translateHaptic(haptic: settings.currentHaptic)
+                    self.settingsDemonstration?.currentHapticName = settings.currentHaptic.rawValue
                 }
 
             }
 
+        }
+    }
+
+    func translateHaptic(haptic: Haptics.HapticsTypes) -> WKHapticType {
+        switch haptic {
+            case .notification:
+                return WKHapticType.notification
+            case .directionUp:
+            return WKHapticType.directionUp
+            case .success:
+                return WKHapticType.success
+            case .retry:
+                return WKHapticType.retry
+            case .start:
+                return WKHapticType.start
+            case .stop:
+                return WKHapticType.stop
         }
     }
 
@@ -66,7 +86,4 @@ class WatchCommunication: NSObject, WCSessionDelegate {
         self.mySession.activate()
         print("WatchCommunication: WCSession is activated")
     }
-    
-    
 }
-

@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F315EF512C001DB4006BC23E /* SettingsDemonstration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F315EF502C001DB4006BC23E /* SettingsDemonstration.swift */; };
 		F3227DB52BDC66DD0031D823 /* Communication.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3227DB42BDC66DD0031D823 /* Communication.swift */; };
 		F3227DB72BE0188A0031D823 /* WatchCommunication.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3227DB62BE0188A0031D823 /* WatchCommunication.swift */; };
+		F322DE752BF51BFD00BE9E9D /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F322DE742BF51BFD00BE9E9D /* Settings.swift */; };
+		F3251CC92BF99FFB00216054 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F322DE742BF51BFD00BE9E9D /* Settings.swift */; };
 		F37CB3702BDB2D8800BECFEB /* targetZoneKeeperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB36F2BDB2D8800BECFEB /* targetZoneKeeperApp.swift */; };
 		F37CB3722BDB2D8800BECFEB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3712BDB2D8800BECFEB /* ContentView.swift */; };
 		F37CB3742BDB2D8900BECFEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F37CB3732BDB2D8900BECFEB /* Assets.xcassets */; };
@@ -80,8 +83,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F315EF502C001DB4006BC23E /* SettingsDemonstration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDemonstration.swift; sourceTree = "<group>"; };
 		F3227DB42BDC66DD0031D823 /* Communication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Communication.swift; sourceTree = "<group>"; };
 		F3227DB62BE0188A0031D823 /* WatchCommunication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCommunication.swift; sourceTree = "<group>"; };
+		F322DE742BF51BFD00BE9E9D /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		F37CB36C2BDB2D8800BECFEB /* targetZoneKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = targetZoneKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F37CB36F2BDB2D8800BECFEB /* targetZoneKeeperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = targetZoneKeeperApp.swift; sourceTree = "<group>"; };
 		F37CB3712BDB2D8800BECFEB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -187,6 +192,7 @@
 				F3227DB42BDC66DD0031D823 /* Communication.swift */,
 				F37CB3732BDB2D8900BECFEB /* Assets.xcassets */,
 				F37CB3752BDB2D8900BECFEB /* Preview Content */,
+				F322DE742BF51BFD00BE9E9D /* Settings.swift */,
 			);
 			path = targetZoneKeeper;
 			sourceTree = "<group>";
@@ -227,6 +233,7 @@
 				F37CB39B2BDB2D8A00BECFEB /* Assets.xcassets */,
 				F37CB39D2BDB2D8A00BECFEB /* Preview Content */,
 				F397B3AE2BE151F600765055 /* HeartRateData.swift */,
+				F315EF502C001DB4006BC23E /* SettingsDemonstration.swift */,
 			);
 			path = "targetZoneKeeper Watch App";
 			sourceTree = "<group>";
@@ -480,6 +487,7 @@
 			files = (
 				F37CB3722BDB2D8800BECFEB /* ContentView.swift in Sources */,
 				F37CB3702BDB2D8800BECFEB /* targetZoneKeeperApp.swift in Sources */,
+				F322DE752BF51BFD00BE9E9D /* Settings.swift in Sources */,
 				F3227DB52BDC66DD0031D823 /* Communication.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -505,6 +513,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F315EF512C001DB4006BC23E /* SettingsDemonstration.swift in Sources */,
+				F3251CC92BF99FFB00216054 /* Settings.swift in Sources */,
 				F397B3AF2BE151F600765055 /* HeartRateData.swift in Sources */,
 				F3227DB72BE0188A0031D823 /* WatchCommunication.swift in Sources */,
 				F37CB39A2BDB2D8900BECFEB /* ContentView.swift in Sources */,
@@ -619,7 +629,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				WATCHOS_DEPLOYMENT_TARGET = 10.3;
+				WATCHOS_DEPLOYMENT_TARGET = 10.4;
 			};
 			name = Debug;
 		};
@@ -674,7 +684,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				WATCHOS_DEPLOYMENT_TARGET = 10.3;
+				WATCHOS_DEPLOYMENT_TARGET = 10.4;
 			};
 			name = Release;
 		};
@@ -709,7 +719,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.3;
+				WATCHOS_DEPLOYMENT_TARGET = 10.4;
 			};
 			name = Debug;
 		};
@@ -745,7 +755,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 10.3;
+				WATCHOS_DEPLOYMENT_TARGET = 10.4;
 			};
 			name = Release;
 		};
