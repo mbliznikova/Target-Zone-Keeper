@@ -13,95 +13,15 @@ enum ViewName {
 }
 
 struct ContentView: View {
-    
-    @State private var currentView = ViewName.start
 
-    var body: some View {
-        switch currentView {
-        case .start:
-            TargetZoneView(currentView: $currentView)
-        case .settings:
-            SettingsView(currentView: $currentView)
-        }
-    }
-}
-
-struct TargetZoneView: View {
-
-    @Binding var currentView: ViewName
-    
     @State private var lowerBoundary: Int = 60
     @State private var upperBoundary: Int = 90
-    
-    var body: some View {
-        VStack {
-            // TODO: sanitize the input: check for a valid range
-            Text("Please enter your target zone boundaries")
-                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-            HStack {
-                Text("Lower boundary")
-                TextField(
-                    lowerBoundary == 0 ? "Lower boundary" : String(lowerBoundary),
-                    value: $lowerBoundary,
-                    formatter: NumberFormatter()
-                )
-                .keyboardType(.numberPad)
-                .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification), perform: { obj in
-                    if let textField = obj.object as? UITextField {
-                        textField.selectedTextRange = textField.textRange(
-                            from: textField.beginningOfDocument,
-                            to: textField.endOfDocument
-                        )
-                    }
-                })
-                .onChange(of: lowerBoundary) { _, _ in
-                    Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary])
-                }
 
-            }
-            .padding()
-            HStack {
-                Text("Upper boundary")
-                TextField(
-                    "",
-                    value: $upperBoundary,
-                    formatter: NumberFormatter()
-                )
-                .keyboardType(.numberPad)
-                //                .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification), perform: { obj in
-                //                    if let textField = obj.object as? UITextField {
-                //                        textField.selectedTextRange = textField.textRange(
-                //                            from: textField.beginningOfDocument,
-                //                            to: textField.endOfDocument
-                //                        )
-                //                    }
-                //                })
-                .onChange(of: upperBoundary) { _, _ in
-                    Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary])
-                }
-            }
-            .padding()
-            Text("The boundaries are: \(lowerBoundary) and \(upperBoundary)")
-        }
-        .padding()
-        VStack {
-            // TODO: check if annother device is reachable and session is active
-            Button("Start", action: {
-                Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary, "workoutStarted": true])
-            })
-        }
-
-        Button("Settings", action: {currentView = .settings})
-    }
-}
-
-struct SettingsView: View {
 
     @Environment(\.self) var environment
 
     @State var settings = Settings()
 
-    @Binding var currentView: ViewName
 
     @State private var settingsInZoneHaptics: Bool = false
 
@@ -115,163 +35,218 @@ struct SettingsView: View {
 
     var body: some View {
         NavigationStack(root: {
+            Form {
 
-            VStack {
+                Section(header: Text("Set target zone"), content: {
+                    VStack {
+                        Spacer()
 
-                Form {
-                    Section(header: Text("Haptics"), content: {
-                        NavigationLink(
-                            destination: HapticTypesView(
-                                zoneAlert: $fasterHaptic,
-                                onSelect: {
-                                    settings.fasterHaptic = fasterHaptic
-                                    settings.isTestHaptic = true
-                                    settings.currentHaptic = fasterHaptic
-                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
-                                }, onListDisappear: {
-                                    settings.isTestHaptic = false
-                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
-                                }
-                            )
-                        )
-                        {
-                            HStack {
-                                Text("Below zone alert")
-                                Spacer()
-                                Text("\(fasterHaptic.rawValue)")
-                            }
-                        }
-
-                        NavigationLink(
-                            destination: HapticTypesView(
-                                zoneAlert: $inZoneHaptic,
-                                onSelect: {
-                                    settings.inZoneHaptic = inZoneHaptic
-                                    settings.isTestHaptic = true
-                                    settings.currentHaptic = inZoneHaptic
-                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
-                                }, onListDisappear: {
-                                    settings.isTestHaptic = false
-                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
-                                }
-                            )
-                        ) {
-                            HStack {
-                                Text("In zone alert")
-                                Spacer()
-                                Text("\(inZoneHaptic.rawValue)")
-                            }
-                        }
-
-                        NavigationLink(
-                            destination: HapticTypesView(
-                                zoneAlert: $slowerHaptic,
-                                onSelect: {
-                                    settings.slowerHaptic = slowerHaptic
-                                    settings.isTestHaptic = true
-                                    settings.currentHaptic = slowerHaptic
-                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
-                                }, onListDisappear: {
-                                    settings.isTestHaptic = false
-                                    Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
-                                }
-                            )
-                        ) {
-                            HStack {
-                                Text("Above zone alert")
-                                Spacer()
-                                Text("\(slowerHaptic.rawValue)")
-                            }
-                        }
-
-                            Toggle("In-zone haptic alerts?", isOn: $settings.ifInZoneHaptics)
-                                .onChange(of: settings.ifInZoneHaptics) {
-                                    let dictUserInfo = settings.toDictionary()
-                                    Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
-                                }
-                    })
-
-                    Section(header: Text("Colors"), content: {
-                        HStack { ColorPicker("Below target zone", selection: $belowZoneColor)
-                                .onChange(of: belowZoneColor) {
-                                    let resolvedColor = belowZoneColor.resolve(in: environment)
-                                    settings.belowZoneColor.red = Double(resolvedColor.red)
-                                    settings.belowZoneColor.green = Double(resolvedColor.green)
-                                    settings.belowZoneColor.blue = Double(resolvedColor.blue)
-                                    settings.belowZoneColor.opacity = Double(resolvedColor.opacity)
-                                    let dictUserInfo = settings.toDictionary()
-                                    Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
-                                }
-                        }
+                        // TODO: sanitize the input: check for a valid range
                         HStack {
-                            ColorPicker("In target zone", selection: $inZoneColor)
-                                .onChange(of: inZoneColor) {
-                                    let resolvedColor = inZoneColor.resolve(in: environment)
-                                    settings.inZoneColor.red = Double(resolvedColor.red)
-                                    settings.inZoneColor.green = Double(resolvedColor.green)
-                                    settings.inZoneColor.blue = Double(resolvedColor.blue)
-                                    settings.inZoneColor.opacity = Double(resolvedColor.opacity)
-                                    let dictUserInfo = settings.toDictionary()
-                                    Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
+                            Text("Lower boundary")
+                            TextField(
+                                lowerBoundary == 0 ? "Lower boundary" : String(lowerBoundary),
+                                value: $lowerBoundary,
+                                formatter: NumberFormatter()
+                            )
+                            .keyboardType(.numberPad)
+                            .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification), perform: { obj in
+                                if let textField = obj.object as? UITextField {
+                                    textField.selectedTextRange = textField.textRange(
+                                        from: textField.beginningOfDocument,
+                                        to: textField.endOfDocument
+                                    )
                                 }
+                            })
+                            .onChange(of: lowerBoundary) { _, _ in
+                                Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary])
+                            }
+
                         }
+                        Spacer()
                         HStack {
-                            ColorPicker("Above target zone", selection: $aboveZoneColor)
-                                .onChange(of: aboveZoneColor) {
-                                    let resolvedColor = aboveZoneColor.resolve(in: environment)
-                                    settings.aboveZoneColor.red = Double(resolvedColor.red)
-                                    settings.aboveZoneColor.green = Double(resolvedColor.green)
-                                    settings.aboveZoneColor.blue = Double(resolvedColor.blue)
-                                    settings.aboveZoneColor.opacity = Double(resolvedColor.opacity)
-                                    let dictUserInfo = settings.toDictionary()
-                                    Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
-                                }
+                            Text("Upper boundary")
+                            TextField(
+                                "",
+                                value: $upperBoundary,
+                                formatter: NumberFormatter()
+                            )
+                            .keyboardType(.numberPad)
+                            //                .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification), perform: { obj in
+                            //                    if let textField = obj.object as? UITextField {
+                            //                        textField.selectedTextRange = textField.textRange(
+                            //                            from: textField.beginningOfDocument,
+                            //                            to: textField.endOfDocument
+                            //                        )
+                            //                    }
+                            //                })
+                            .onChange(of: upperBoundary) { _, _ in
+                                Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary])
+                            }
+
                         }
-                        Button("Back", action: {currentView = .start})
-                    })
-                }
-                .navigationTitle("Settings")
-            }
-            .frame(width: .infinity, height: 500, alignment: .center)
-        })
 
-    }
+                        Spacer()
 
-    struct HapticTypesView: View {
-
-        @Binding var zoneAlert: Haptics.HapticsTypes
-        var onSelect: () -> Void
-        var onListDisappear: () -> Void
-        @Environment(\.colorScheme) var colorScheme
-
-        var body: some View {
-                Form {
-                    ForEach(Haptics.HapticsTypes.allCases) { haptic in
+                        // TODO: check if annother device is reachable and session is active
                         Button(action: {
-                            zoneAlert = haptic
-                            onSelect()
-                        })
-                        {
-                            HStack {
-                                if zoneAlert == haptic {
-                                    Image(systemName: "checkmark")
-                                }
-                                let textColor: Color = colorScheme == .dark ? Color.white : Color.black
-                                Text(haptic.rawValue)
-                                    .foregroundStyle(textColor)
+                            Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary, "workoutStarted": true])
+                        }) {
+                            Text("Start")
+                                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        Spacer()
+                    }
+                })
+
+                Section(header: Text("Haptics"), content: {
+                    NavigationLink(
+                        destination: HapticTypesView(
+                            zoneAlert: $fasterHaptic,
+                            onSelect: {
+                                settings.fasterHaptic = fasterHaptic
+                                settings.isTestHaptic = true
+                                settings.currentHaptic = fasterHaptic
+                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                            }, onListDisappear: {
+                                settings.isTestHaptic = false
+                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
                             }
+                        )
+                    )
+                    {
+                        HStack {
+                            Text("Below zone alert")
+                            Spacer()
+                            Text("\(fasterHaptic.rawValue)")
+                        }
+                    }
+
+                    NavigationLink(
+                        destination: HapticTypesView(
+                            zoneAlert: $inZoneHaptic,
+                            onSelect: {
+                                settings.inZoneHaptic = inZoneHaptic
+                                settings.isTestHaptic = true
+                                settings.currentHaptic = inZoneHaptic
+                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                            }, onListDisappear: {
+                                settings.isTestHaptic = false
+                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                            }
+                        )
+                    ) {
+                        HStack {
+                            Text("In zone alert")
+                            Spacer()
+                            Text("\(inZoneHaptic.rawValue)")
+                        }
+                    }
+
+                    NavigationLink(
+                        destination: HapticTypesView(
+                            zoneAlert: $slowerHaptic,
+                            onSelect: {
+                                settings.slowerHaptic = slowerHaptic
+                                settings.isTestHaptic = true
+                                settings.currentHaptic = slowerHaptic
+                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                            }, onListDisappear: {
+                                settings.isTestHaptic = false
+                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                            }
+                        )
+                    ) {
+                        HStack {
+                            Text("Above zone alert")
+                            Spacer()
+                            Text("\(slowerHaptic.rawValue)")
+                        }
+                    }
+
+                        Toggle("In-zone haptic alerts?", isOn: $settings.ifInZoneHaptics)
+                            .onChange(of: settings.ifInZoneHaptics) {
+                                let dictUserInfo = settings.toDictionary()
+                                Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
+                            }
+                })
+
+                Section(header: Text("Colors"), content: {
+                    HStack { ColorPicker("Below target zone", selection: $belowZoneColor)
+                            .onChange(of: belowZoneColor) {
+                                let resolvedColor = belowZoneColor.resolve(in: environment)
+                                settings.belowZoneColor.red = Double(resolvedColor.red)
+                                settings.belowZoneColor.green = Double(resolvedColor.green)
+                                settings.belowZoneColor.blue = Double(resolvedColor.blue)
+                                settings.belowZoneColor.opacity = Double(resolvedColor.opacity)
+                                let dictUserInfo = settings.toDictionary()
+                                Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
+                            }
+                    }
+                    HStack {
+                        ColorPicker("In target zone", selection: $inZoneColor)
+                            .onChange(of: inZoneColor) {
+                                let resolvedColor = inZoneColor.resolve(in: environment)
+                                settings.inZoneColor.red = Double(resolvedColor.red)
+                                settings.inZoneColor.green = Double(resolvedColor.green)
+                                settings.inZoneColor.blue = Double(resolvedColor.blue)
+                                settings.inZoneColor.opacity = Double(resolvedColor.opacity)
+                                let dictUserInfo = settings.toDictionary()
+                                Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
+                            }
+                    }
+                    HStack {
+                        ColorPicker("Above target zone", selection: $aboveZoneColor)
+                            .onChange(of: aboveZoneColor) {
+                                let resolvedColor = aboveZoneColor.resolve(in: environment)
+                                settings.aboveZoneColor.red = Double(resolvedColor.red)
+                                settings.aboveZoneColor.green = Double(resolvedColor.green)
+                                settings.aboveZoneColor.blue = Double(resolvedColor.blue)
+                                settings.aboveZoneColor.opacity = Double(resolvedColor.opacity)
+                                let dictUserInfo = settings.toDictionary()
+                                Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
+                            }
+                    }
+                })
+            }
+            .navigationTitle("Settings")
+        })
+    }
+}
+
+struct HapticTypesView: View {
+
+    @Binding var zoneAlert: Haptics.HapticsTypes
+    var onSelect: () -> Void
+    var onListDisappear: () -> Void
+    @Environment(\.colorScheme) var colorScheme
+
+    var body: some View {
+            Form {
+                ForEach(Haptics.HapticsTypes.allCases) { haptic in
+                    Button(action: {
+                        zoneAlert = haptic
+                        onSelect()
+                    })
+                    {
+                        HStack {
+                            if zoneAlert == haptic {
+                                Image(systemName: "checkmark")
+                            }
+                            let textColor: Color = colorScheme == .dark ? Color.white : Color.black
+                            Text(haptic.rawValue)
+                                .foregroundStyle(textColor)
                         }
                     }
                 }
-                .onDisappear() {
-                    onListDisappear()
-                }
-        }
+            }
+            .onDisappear() {
+                onListDisappear()
+            }
     }
-
 }
 
 #Preview {
     ContentView()
 }
-
