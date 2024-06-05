@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    // TODO: naming convention!
     @ObservedObject var heartRateDataModel: HeartRateData
-    @ObservedObject var settingsDemonstration: SettingsDemonstration
+    @ObservedObject var settingsDemonstrationModel: SettingsDemonstration
 
     @State var currentView: String = "welcome"
 
@@ -23,10 +23,26 @@ struct ContentView: View {
             if !heartRateDataModel.isWorkoutStarted {
                 if !heartRateDataModel.isTestHaptic {
                     VStack {
-                        Text("Target Zone")
-                            .foregroundStyle(.blue)
-                        Text("\(heartRateDataModel.lowerBoundary) - \(heartRateDataModel.upperBoundary)\n\n")
-                            .foregroundStyle(.blue)
+                        Picker("", selection: $heartRateDataModel.currentHeartRateZone) {
+                            ForEach(HeartRateZones.Zones.allCases) { value in
+                                Text("\(value.rawValue)")
+                            }
+                        }
+                        .onChange(of: heartRateDataModel.currentHeartRateZone, initial: true) {
+                            // TODO: handle the default max heart rate
+                            WatchCommunication.shared.sendToPhone(data: ["currentHeartRateZone": heartRateDataModel.currentHeartRateZone.rawValue])
+                            heartRateDataModel.calculateZoneBoundaries(zone: heartRateDataModel.currentHeartRateZone, maxHeartRate: heartRateDataModel.maxHeartRate ?? 190)
+                            do {
+                             let encoder = JSONEncoder()
+                                if let encoded = try? encoder.encode(heartRateDataModel.currentHeartRateZone) {
+                                    UserDefaults.standard.set(encoded, forKey: "currentHeartRateZone")
+                                }
+                            }
+                        }
+                        .pickerStyle(.wheel)
+                        Spacer()
+                        Text("\(heartRateDataModel.lowerBoundary) - \(heartRateDataModel.upperBoundary)")
+                        Spacer()
                         Button("START") {
                             currentView = "main"
                         }
@@ -35,9 +51,9 @@ struct ContentView: View {
                 }
                 else {
                     VStack {
-                        Text("\(settingsDemonstration.currentHapticName)")
-                            .onChange(of: settingsDemonstration.currentHaptic, initial: true) {
-                                WKInterfaceDevice.current().play(settingsDemonstration.currentHaptic)
+                        Text("\(settingsDemonstrationModel.currentHapticName)")
+                            .onChange(of: settingsDemonstrationModel.currentHaptic, initial: true) {
+                                WKInterfaceDevice.current().play(settingsDemonstrationModel.currentHaptic)
                             }
                         Button("Try") {
                             WKInterfaceDevice.current().play(heartRateDataModel.fasterAlert)
@@ -65,10 +81,12 @@ struct ContentView: View {
                 } else {
                     Text("\(heartRateDataModel.heartRate)\n")
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        //TODO: handle the text color
                         .foregroundStyle(heartRateDataModel.color == .blue ? .white : .black)
                 }
                 Text("\(heartRateDataModel.message)")
                     .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                    //TODO: handle the text color
                     .foregroundStyle(heartRateDataModel.color == .blue ? .white : .black)
             }
             .onAppear(perform: {
@@ -130,5 +148,5 @@ struct ContentView: View {
 
 
 #Preview {
-    ContentView(heartRateDataModel: HeartRateData(), settingsDemonstration: SettingsDemonstration())
+    ContentView(heartRateDataModel: HeartRateData(), settingsDemonstrationModel: SettingsDemonstration())
 }

@@ -8,22 +8,13 @@
 import SwiftUI
 import Combine
 
-enum ViewName {
-    case start, settings
-}
-
 struct ContentView: View {
 
-    @State private var lowerBoundary: Int = 60
-    @State private var upperBoundary: Int = 90
-
+    @ObservedObject var settingsModel: Settings
 
     @Environment(\.self) var environment
 
-    @State var settings = Settings()
-
-
-    @State private var settingsInZoneHaptics: Bool = false
+    @AppStorage("ifInZoneHaptics") private var ifInZoneHaptics: Bool = false
 
     @State private var belowZoneColor = Color(red: 0.96, green: 0.8, blue: 0.27)
     @State private var inZoneColor = Color(red: 0.39, green: 0.76, blue: 0.4)
@@ -34,69 +25,40 @@ struct ContentView: View {
     @State private var slowerHaptic: Haptics.HapticsTypes = .stop
 
     var body: some View {
+
         NavigationStack(root: {
             Form {
 
                 Section(header: Text("Set target zone"), content: {
                     VStack {
-                        Spacer()
-
-                        // TODO: sanitize the input: check for a valid range
                         HStack {
-                            Text("Lower boundary")
-                            TextField(
-                                lowerBoundary == 0 ? "Lower boundary" : String(lowerBoundary),
-                                value: $lowerBoundary,
-                                formatter: NumberFormatter()
-                            )
-                            .keyboardType(.numberPad)
-                            .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification), perform: { obj in
-                                if let textField = obj.object as? UITextField {
-                                    textField.selectedTextRange = textField.textRange(
-                                        from: textField.beginningOfDocument,
-                                        to: textField.endOfDocument
-                                    )
+                            Picker("Target Heart Rate zone", selection: $settingsModel.currentHeartRateZone) {
+                                ForEach(HeartRateZones.Zones.allCases) { value in
+                                    Text(value.rawValue)
                                 }
-                            })
-                            .onChange(of: lowerBoundary) { _, _ in
-                                Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary])
                             }
+                            .onChange(of: settingsModel.currentHeartRateZone, initial: true) {
+                                Communication.shared.sendToWatch(data: ["currentHeartRateZone": settingsModel.currentHeartRateZone.rawValue])
+
+                                do {
+                                 let encoder = JSONEncoder()
+                                    if let encoded = try? encoder.encode(settingsModel.currentHeartRateZone) {
+                                        UserDefaults.standard.set(encoded, forKey: "currentHeartRateZone")
+                                    }
+                                }
+
+                            }
+                            .pickerStyle(.wheel)
 
                         }
-                        Spacer()
-                        HStack {
-                            Text("Upper boundary")
-                            TextField(
-                                "",
-                                value: $upperBoundary,
-                                formatter: NumberFormatter()
-                            )
-                            .keyboardType(.numberPad)
-                            //                .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification), perform: { obj in
-                            //                    if let textField = obj.object as? UITextField {
-                            //                        textField.selectedTextRange = textField.textRange(
-                            //                            from: textField.beginningOfDocument,
-                            //                            to: textField.endOfDocument
-                            //                        )
-                            //                    }
-                            //                })
-                            .onChange(of: upperBoundary) { _, _ in
-                                Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary])
-                            }
-
-                        }
-
-                        Spacer()
-
                         // TODO: check if annother device is reachable and session is active
                         Button(action: {
-                            Communication.shared.sendToWatch(data: ["upper": upperBoundary, "lower": lowerBoundary, "workoutStarted": true])
+                            Communication.shared.sendToWatch(data: ["currentHeartRateZone": settingsModel.currentHeartRateZone.rawValue, "workoutStarted": true])
                         }) {
                             Text("Start")
                                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                         }
                         .buttonStyle(.borderedProminent)
-                        Spacer()
                     }
                 })
 
@@ -105,13 +67,13 @@ struct ContentView: View {
                         destination: HapticTypesView(
                             zoneAlert: $fasterHaptic,
                             onSelect: {
-                                settings.fasterHaptic = fasterHaptic
-                                settings.isTestHaptic = true
-                                settings.currentHaptic = fasterHaptic
-                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                settingsModel.fasterHaptic = fasterHaptic
+                                settingsModel.isTestHaptic = true
+                                settingsModel.currentHaptic = fasterHaptic
+                                Communication.shared.sendToWatch(data: ["Settings" : settingsModel.toDictionary()])
                             }, onListDisappear: {
-                                settings.isTestHaptic = false
-                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                settingsModel.isTestHaptic = false
+                                Communication.shared.sendToWatch(data: ["Settings" : settingsModel.toDictionary()])
                             }
                         )
                     )
@@ -127,13 +89,13 @@ struct ContentView: View {
                         destination: HapticTypesView(
                             zoneAlert: $inZoneHaptic,
                             onSelect: {
-                                settings.inZoneHaptic = inZoneHaptic
-                                settings.isTestHaptic = true
-                                settings.currentHaptic = inZoneHaptic
-                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                settingsModel.inZoneHaptic = inZoneHaptic
+                                settingsModel.isTestHaptic = true
+                                settingsModel.currentHaptic = inZoneHaptic
+                                Communication.shared.sendToWatch(data: ["Settings" : settingsModel.toDictionary()])
                             }, onListDisappear: {
-                                settings.isTestHaptic = false
-                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                settingsModel.isTestHaptic = false
+                                Communication.shared.sendToWatch(data: ["Settings" : settingsModel.toDictionary()])
                             }
                         )
                     ) {
@@ -148,13 +110,13 @@ struct ContentView: View {
                         destination: HapticTypesView(
                             zoneAlert: $slowerHaptic,
                             onSelect: {
-                                settings.slowerHaptic = slowerHaptic
-                                settings.isTestHaptic = true
-                                settings.currentHaptic = slowerHaptic
-                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                settingsModel.slowerHaptic = slowerHaptic
+                                settingsModel.isTestHaptic = true
+                                settingsModel.currentHaptic = slowerHaptic
+                                Communication.shared.sendToWatch(data: ["Settings" : settingsModel.toDictionary()])
                             }, onListDisappear: {
-                                settings.isTestHaptic = false
-                                Communication.shared.sendToWatch(data: ["Settings" : settings.toDictionary()])
+                                settingsModel.isTestHaptic = false
+                                Communication.shared.sendToWatch(data: ["Settings" : settingsModel.toDictionary()])
                             }
                         )
                     ) {
@@ -165,9 +127,10 @@ struct ContentView: View {
                         }
                     }
 
-                        Toggle("In-zone haptic alerts?", isOn: $settings.ifInZoneHaptics)
-                            .onChange(of: settings.ifInZoneHaptics) {
-                                let dictUserInfo = settings.toDictionary()
+                        Toggle("In-zone haptic alerts?", isOn: $ifInZoneHaptics)
+                            .onChange(of: ifInZoneHaptics) {
+                                settingsModel.ifInZoneHaptics = ifInZoneHaptics
+                                let dictUserInfo = settingsModel.toDictionary()
                                 Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
                             }
                 })
@@ -176,11 +139,11 @@ struct ContentView: View {
                     HStack { ColorPicker("Below target zone", selection: $belowZoneColor)
                             .onChange(of: belowZoneColor) {
                                 let resolvedColor = belowZoneColor.resolve(in: environment)
-                                settings.belowZoneColor.red = Double(resolvedColor.red)
-                                settings.belowZoneColor.green = Double(resolvedColor.green)
-                                settings.belowZoneColor.blue = Double(resolvedColor.blue)
-                                settings.belowZoneColor.opacity = Double(resolvedColor.opacity)
-                                let dictUserInfo = settings.toDictionary()
+                                settingsModel.belowZoneColor.red = Double(resolvedColor.red)
+                                settingsModel.belowZoneColor.green = Double(resolvedColor.green)
+                                settingsModel.belowZoneColor.blue = Double(resolvedColor.blue)
+                                settingsModel.belowZoneColor.opacity = Double(resolvedColor.opacity)
+                                let dictUserInfo = settingsModel.toDictionary()
                                 Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
                             }
                     }
@@ -188,11 +151,11 @@ struct ContentView: View {
                         ColorPicker("In target zone", selection: $inZoneColor)
                             .onChange(of: inZoneColor) {
                                 let resolvedColor = inZoneColor.resolve(in: environment)
-                                settings.inZoneColor.red = Double(resolvedColor.red)
-                                settings.inZoneColor.green = Double(resolvedColor.green)
-                                settings.inZoneColor.blue = Double(resolvedColor.blue)
-                                settings.inZoneColor.opacity = Double(resolvedColor.opacity)
-                                let dictUserInfo = settings.toDictionary()
+                                settingsModel.inZoneColor.red = Double(resolvedColor.red)
+                                settingsModel.inZoneColor.green = Double(resolvedColor.green)
+                                settingsModel.inZoneColor.blue = Double(resolvedColor.blue)
+                                settingsModel.inZoneColor.opacity = Double(resolvedColor.opacity)
+                                let dictUserInfo = settingsModel.toDictionary()
                                 Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
                             }
                     }
@@ -200,11 +163,11 @@ struct ContentView: View {
                         ColorPicker("Above target zone", selection: $aboveZoneColor)
                             .onChange(of: aboveZoneColor) {
                                 let resolvedColor = aboveZoneColor.resolve(in: environment)
-                                settings.aboveZoneColor.red = Double(resolvedColor.red)
-                                settings.aboveZoneColor.green = Double(resolvedColor.green)
-                                settings.aboveZoneColor.blue = Double(resolvedColor.blue)
-                                settings.aboveZoneColor.opacity = Double(resolvedColor.opacity)
-                                let dictUserInfo = settings.toDictionary()
+                                settingsModel.aboveZoneColor.red = Double(resolvedColor.red)
+                                settingsModel.aboveZoneColor.green = Double(resolvedColor.green)
+                                settingsModel.aboveZoneColor.blue = Double(resolvedColor.blue)
+                                settingsModel.aboveZoneColor.opacity = Double(resolvedColor.opacity)
+                                let dictUserInfo = settingsModel.toDictionary()
                                 Communication.shared.sendToWatch(data: ["Settings" : dictUserInfo])
                             }
                     }
@@ -248,5 +211,5 @@ struct HapticTypesView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(settingsModel: Settings())
 }

@@ -14,7 +14,7 @@ struct targetZoneKeeper_Watch_AppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(heartRateDataModel: heartRateData, settingsDemonstration: settingsDemonstrationData)
+            ContentView(heartRateDataModel: heartRateData, settingsDemonstrationModel: settingsDemonstrationData)
         }
     }
 }

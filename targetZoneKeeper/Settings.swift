@@ -59,10 +59,35 @@ struct Haptics {
     }
 }
 
+struct HeartRateZones {
+    enum Zones: String, CaseIterable, Identifiable, Codable {
+        case zone1 = "Zone 1: < 60%"
+        case zone2 = "Zone 2: 60-70%"
+        case zone3 = "Zone 3: 70-80%"
+        case zone4 = "Zone 4: 80-90%"
+        case zone5 = "Zone 5: > 90%"
 
-class Settings {
+        var id: Self {
+            self
+        }
+    }
 
-    var ifInZoneHaptics: Bool = false
+    var currentHeartRateZone: Zones
+
+    var latestUpdateDate: Date
+
+    static func fromRawValue(raw: String) -> Zones {
+        return HeartRateZones.Zones(rawValue: raw) ?? .zone3
+    }
+}
+
+class Settings: ObservableObject {
+
+    @Published var currentHeartRateZone: HeartRateZones.Zones = .zone3
+
+    var watchData = Communication.shared
+
+    var ifInZoneHaptics: Bool = UserDefaults.standard.bool(forKey: "ifInZoneHaptics")
 
     var belowZoneColor: ColorSetting = ColorSetting(red: 0.96, green: 0.8, blue: 0.27, opacity: 1.0)
     var inZoneColor: ColorSetting = ColorSetting(red: 0.39, green: 0.76, blue: 0.4, opacity: 1.0)
@@ -77,7 +102,7 @@ class Settings {
 
     func toDictionary() -> [String: Any] {
         return [
-            "InZoneHaptics": ifInZoneHaptics,
+            "ifInZoneHaptics": ifInZoneHaptics,
             "belowZoneColor": belowZoneColor.toDictionary(),
             "inZoneColor": inZoneColor.toDictionary(),
             "aboveZoneColor": aboveZoneColor.toDictionary(),
@@ -93,7 +118,7 @@ class Settings {
         //TODO: Check if `... as? [String: Any]` evaluate to nil, and write to log if it is
         //TODO: make function that will help with unwrapping and logging
         let result = Settings()
-        result.ifInZoneHaptics = (input["InZoneHaptics"] as? Bool) ?? true;
+        result.ifInZoneHaptics = (input["ifInZoneHaptics"] as? Bool) ?? true;
         result.belowZoneColor = ColorSetting.fromDictionary(input: (input["belowZoneColor"] as? [String: Any]) ?? [:])
         result.inZoneColor = ColorSetting.fromDictionary(input: (input["inZoneColor"] as? [String: Any]) ?? [:])
         result.aboveZoneColor = ColorSetting.fromDictionary(input: (input["aboveZoneColor"] as? [String: Any]) ?? [:])
@@ -103,5 +128,16 @@ class Settings {
         result.isTestHaptic = (input["isTestHaptic"] as? Bool) ?? false
         result.currentHaptic = Haptics.fromRawValue(raw: input["currentHaptic"] as? String ?? "success")
         return result
+    }
+
+    init() {
+        watchData.currentSettings = self
+
+        if let tempHeartRate = UserDefaults.standard.data(forKey: "currentHeartRateZone") {
+            let decoder = JSONDecoder()
+            if let decoded = try? decoder.decode(HeartRateZones.Zones.self, from: tempHeartRate) {
+                currentHeartRateZone = decoded
+            }
+        }
     }
 }

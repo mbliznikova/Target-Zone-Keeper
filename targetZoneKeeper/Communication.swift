@@ -11,20 +11,25 @@ import WatchConnectivity
 class Communication: NSObject, WCSessionDelegate, ObservableObject {
     static let shared = Communication()
 
+    var currentSettings: Settings? = nil
+
     @Published var mySession: WCSession
-    
+
+#if os(iOS)
     func sessionDidBecomeInactive(_ session: WCSession) {
     }
-    
+
     func sessionDidDeactivate(_ session: WCSession) {
+        session.activate()
     }
-    
+#endif
+
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {
         if error != nil {
             print("Communication (iOS): the error is \(String(describing: error))")
         }
     }
-    
+
     func session(_ session: WCSession, didFinish userInfoTransfer: WCSessionUserInfoTransfer, error: (any Error)?) {
         if error != nil {
             print("The user info transfer session finished with the error: \(String(describing: error))")
@@ -40,12 +45,21 @@ class Communication: NSObject, WCSessionDelegate, ObservableObject {
             print("The user info transfer session finished successfully")
             }
     }
-    
+
+    func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any]) {
+        Task { @MainActor in
+            if userInfo["currentHeartRateZone"] != nil {
+                let tempStrHeartRateZone = userInfo["currentHeartRateZone"] as! String?
+                let tempHeartRateZone = HeartRateZones.fromRawValue(raw: tempStrHeartRateZone ?? "Zone 3: 70-80%")
+                //TODO: default value
+                self.currentSettings?.currentHeartRateZone = tempHeartRateZone
+            }
+        }
+    }
+
     func sessionReachabilityDidChange(_ session: WCSession) {
         print("The session's reachability did change. Now isReachable is \(session.isReachable)")
     }
-    
-    
 
     private override init() {
         self.mySession = WCSession.default
@@ -55,18 +69,18 @@ class Communication: NSObject, WCSessionDelegate, ObservableObject {
         self.mySession.activate()
         print("Communication - init(). Session reachable: \(self.mySession.isReachable)")
     }
-    
+
     func sendToWatch(data: [String: Any]) {
         mySession.transferUserInfo(data)
         print("Communication - sendToWatch(). Session is activated: \(mySession.activationState == WCSessionActivationState.activated). Session reachable: \(mySession.isReachable)")
         Task { @MainActor in
-        if mySession.activationState == WCSessionActivationState.activated {
-            print("The WCSession is activate, starting transfer")
-//            print("SENDING DATA: \(data)")
-            
-        } else {
-            print("The WCSession is not activated or is not reachable")
+            if mySession.activationState == WCSessionActivationState.activated {
+                print("The WCSession is activate, starting transfer")
+                print("SENDING DATA: \(data)")
+
+            } else {
+                print("The WCSession is not activated or is not reachable")
+            }
         }
-    }
     }
 }

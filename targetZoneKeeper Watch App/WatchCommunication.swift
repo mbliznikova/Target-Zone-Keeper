@@ -32,13 +32,15 @@ class WatchCommunication: NSObject, WCSessionDelegate {
         print("userInfo is \(userInfo)")
         //TODO: Pass settings as an object into HeartRateData, make it re-render after settings change
         Task { @MainActor in
-            if userInfo["lower"] != nil {
-                let tempLower = userInfo["lower"] as! Int?
-                let tempUpper = userInfo["upper"] as! Int?
-                let tempIsWorkout = userInfo["workoutStarted"] as! Bool?
-                self.heartRate?.lowerBoundary = tempLower!
-                self.heartRate?.upperBoundary = tempUpper!
-                self.heartRate?.isWorkoutStarted = tempIsWorkout ?? false
+            if userInfo["currentHeartRateZone"] != nil {
+                let tempIsWorkoutStarted = userInfo["workoutStarted"] as! Bool?
+                let tempStrHeartRateZone = userInfo["currentHeartRateZone"] as! String?
+                let tempHeartRateZone = HeartRateZones.fromRawValue(raw: tempStrHeartRateZone ?? "Zone 3: 70-80%")
+                //TODO: default value
+                //TODO: better way to handle this data
+                self.heartRate?.currentHeartRateZone = tempHeartRateZone
+                self.heartRate?.calculateZoneBoundaries(zone: tempHeartRateZone, maxHeartRate: self.heartRate?.maxHeartRate ?? 190)
+                self.heartRate?.isWorkoutStarted = tempIsWorkoutStarted ?? false
             } else {
                 if userInfo["Settings"] != nil {
                     //TODO: Check if `... as? [String: Any]` evaluate to nil, and write to log if it is
@@ -62,18 +64,18 @@ class WatchCommunication: NSObject, WCSessionDelegate {
 
     func translateHaptic(haptic: Haptics.HapticsTypes) -> WKHapticType {
         switch haptic {
-            case .notification:
-                return WKHapticType.notification
-            case .directionUp:
+        case .notification:
+            return WKHapticType.notification
+        case .directionUp:
             return WKHapticType.directionUp
-            case .success:
-                return WKHapticType.success
-            case .retry:
-                return WKHapticType.retry
-            case .start:
-                return WKHapticType.start
-            case .stop:
-                return WKHapticType.stop
+        case .success:
+            return WKHapticType.success
+        case .retry:
+            return WKHapticType.retry
+        case .start:
+            return WKHapticType.start
+        case .stop:
+            return WKHapticType.stop
         }
     }
 
@@ -85,5 +87,19 @@ class WatchCommunication: NSObject, WCSessionDelegate {
         self.mySession.delegate = self
         self.mySession.activate()
         print("WatchCommunication: WCSession is activated")
+    }
+
+    func sendToPhone(data: [String: Any]) {
+        mySession.transferUserInfo(data)
+        print("WatchCommunication - sendToPhone(). Session is activated: \(mySession.activationState == WCSessionActivationState.activated). Session reachable: \(mySession.isReachable)")
+        Task { @MainActor in
+        if mySession.activationState == WCSessionActivationState.activated {
+            print("The WCSession is active, starting transfer")
+            print("Sending data: \(data)")
+
+        } else {
+            print("The WCSession is not activated or is not reachable")
+        }
+    }
     }
 }

@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct targetZoneKeeperApp: App {
+    @StateObject var settingsData: Settings = Settings()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(settingsModel: settingsData)
         }
     }
 }

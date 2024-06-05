@@ -11,7 +11,6 @@
 		F3227DB52BDC66DD0031D823 /* Communication.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3227DB42BDC66DD0031D823 /* Communication.swift */; };
 		F3227DB72BE0188A0031D823 /* WatchCommunication.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3227DB62BE0188A0031D823 /* WatchCommunication.swift */; };
 		F322DE752BF51BFD00BE9E9D /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F322DE742BF51BFD00BE9E9D /* Settings.swift */; };
-		F3251CC92BF99FFB00216054 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F322DE742BF51BFD00BE9E9D /* Settings.swift */; };
 		F37CB3702BDB2D8800BECFEB /* targetZoneKeeperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB36F2BDB2D8800BECFEB /* targetZoneKeeperApp.swift */; };
 		F37CB3722BDB2D8800BECFEB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3712BDB2D8800BECFEB /* ContentView.swift */; };
 		F37CB3742BDB2D8900BECFEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F37CB3732BDB2D8900BECFEB /* Assets.xcassets */; };
@@ -28,6 +27,8 @@
 		F37CB3B32BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3B22BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITests.swift */; };
 		F37CB3B52BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3B42BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITestsLaunchTests.swift */; };
 		F397B3AF2BE151F600765055 /* HeartRateData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F397B3AE2BE151F600765055 /* HeartRateData.swift */; };
+		F3BB981B2C0FADDB0080599A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F322DE742BF51BFD00BE9E9D /* Settings.swift */; };
+		F3BB981C2C0FAE1E0080599A /* Communication.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3227DB42BDC66DD0031D823 /* Communication.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,9 +191,9 @@
 				F37CB36F2BDB2D8800BECFEB /* targetZoneKeeperApp.swift */,
 				F37CB3712BDB2D8800BECFEB /* ContentView.swift */,
 				F3227DB42BDC66DD0031D823 /* Communication.swift */,
+				F322DE742BF51BFD00BE9E9D /* Settings.swift */,
 				F37CB3732BDB2D8900BECFEB /* Assets.xcassets */,
 				F37CB3752BDB2D8900BECFEB /* Preview Content */,
-				F322DE742BF51BFD00BE9E9D /* Settings.swift */,
 			);
 			path = targetZoneKeeper;
 			sourceTree = "<group>";
@@ -513,8 +514,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3BB981B2C0FADDB0080599A /* Settings.swift in Sources */,
 				F315EF512C001DB4006BC23E /* SettingsDemonstration.swift in Sources */,
-				F3251CC92BF99FFB00216054 /* Settings.swift in Sources */,
+				F3BB981C2C0FAE1E0080599A /* Communication.swift in Sources */,
 				F397B3AF2BE151F600765055 /* HeartRateData.swift in Sources */,
 				F3227DB72BE0188A0031D823 /* WatchCommunication.swift in Sources */,
 				F37CB39A2BDB2D8900BECFEB /* ContentView.swift in Sources */,
