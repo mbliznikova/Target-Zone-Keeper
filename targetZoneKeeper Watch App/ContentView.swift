@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ContentView: View {
-    // TODO: naming convention!
     @ObservedObject var heartRateDataModel: HeartRateData
     @ObservedObject var settingsDemonstrationModel: SettingsDemonstration
 
@@ -23,15 +22,17 @@ struct ContentView: View {
             if !heartRateDataModel.isWorkoutStarted {
                 if !heartRateDataModel.isTestHaptic {
                     VStack {
-                        Picker("", selection: $heartRateDataModel.currentHeartRateZone) {
-                            ForEach(HeartRateZones.Zones.allCases) { value in
+                        Picker("", selection: $heartRateDataModel.currentHeartRateZone.zone) {
+                            ForEach(HeartRateZoneSettings.Zones.allCases) { value in
                                 Text("\(value.rawValue)")
                             }
                         }
-                        .onChange(of: heartRateDataModel.currentHeartRateZone, initial: true) {
+                        .onChange(of: heartRateDataModel.currentHeartRateZone.zone, initial: false) {
                             // TODO: handle the default max heart rate
-                            WatchCommunication.shared.sendToPhone(data: ["currentHeartRateZone": heartRateDataModel.currentHeartRateZone.rawValue])
-                            heartRateDataModel.calculateZoneBoundaries(zone: heartRateDataModel.currentHeartRateZone, maxHeartRate: heartRateDataModel.maxHeartRate ?? 190)
+                            print("Triggering latestUpdateDate to update")
+                            heartRateDataModel.currentHeartRateZone.latestUpdateDate = Date()
+                            WatchCommunication.shared.sendToPhone(data: ["currentHeartRateZone": heartRateDataModel.currentHeartRateZone.toDictionary()])
+                            heartRateDataModel.calculateZoneBoundaries(zone: heartRateDataModel.currentHeartRateZone.zone, maxHeartRate: heartRateDataModel.maxHeartRate ?? 190)
                             do {
                              let encoder = JSONEncoder()
                                 if let encoded = try? encoder.encode(heartRateDataModel.currentHeartRateZone) {
@@ -56,7 +57,7 @@ struct ContentView: View {
                                 WKInterfaceDevice.current().play(settingsDemonstrationModel.currentHaptic)
                             }
                         Button("Try") {
-                            WKInterfaceDevice.current().play(heartRateDataModel.fasterAlert)
+                            WKInterfaceDevice.current().play(settingsDemonstrationModel.currentHaptic)
                         }
                     }
 

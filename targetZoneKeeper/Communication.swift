@@ -49,16 +49,16 @@ class Communication: NSObject, WCSessionDelegate, ObservableObject {
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any]) {
         Task { @MainActor in
             if userInfo["currentHeartRateZone"] != nil {
-                let tempStrHeartRateZone = userInfo["currentHeartRateZone"] as! String?
-                let tempHeartRateZone = HeartRateZones.fromRawValue(raw: tempStrHeartRateZone ?? "Zone 3: 70-80%")
-                //TODO: default value
-                self.currentSettings?.currentHeartRateZone = tempHeartRateZone
+                let tempHeartRateSettings = HeartRateZoneSettings.fromDictionary(input: userInfo["currentHeartRateZone"] as? [String: Any] ?? [:])
+                if (self.currentSettings?.currentHeartRateZone.latestUpdateDate)! < tempHeartRateSettings.latestUpdateDate {
+                    self.currentSettings?.currentHeartRateZone.zone = tempHeartRateSettings.zone
+                }
             }
         }
     }
 
     func sessionReachabilityDidChange(_ session: WCSession) {
-        print("The session's reachability did change. Now isReachable is \(session.isReachable)")
+        print("\(Date()) The session's reachability did change. Now isReachable is \(session.isReachable)")
     }
 
     private override init() {

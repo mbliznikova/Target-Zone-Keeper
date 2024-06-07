@@ -59,7 +59,12 @@ struct Haptics {
     }
 }
 
-struct HeartRateZones {
+struct HeartRateZoneSettings: Decodable, Encodable, Equatable, Hashable {
+
+    var zone: Zones
+
+    var latestUpdateDate: Date
+
     enum Zones: String, CaseIterable, Identifiable, Codable {
         case zone1 = "Zone 1: < 60%"
         case zone2 = "Zone 2: 60-70%"
@@ -72,18 +77,28 @@ struct HeartRateZones {
         }
     }
 
-    var currentHeartRateZone: Zones
-
-    var latestUpdateDate: Date
-
     static func fromRawValue(raw: String) -> Zones {
-        return HeartRateZones.Zones(rawValue: raw) ?? .zone3
+        return HeartRateZoneSettings.Zones(rawValue: raw) ?? .zone3
+    }
+
+    func toDictionary() -> [String: Any] {
+        return [
+            "zone": zone.rawValue,
+            "date": latestUpdateDate
+        ]
+    }
+
+    static func fromDictionary(input: [String: Any]) -> HeartRateZoneSettings {
+        let zone = fromRawValue(raw: (input["zone"] as? String) ?? Zones.zone3.rawValue)
+        let updateDate = (input["date"] as? Date) ?? Date()
+
+        return HeartRateZoneSettings(zone: zone, latestUpdateDate: updateDate)
     }
 }
 
 class Settings: ObservableObject {
 
-    @Published var currentHeartRateZone: HeartRateZones.Zones = .zone3
+    @Published var currentHeartRateZone: HeartRateZoneSettings = HeartRateZoneSettings(zone: .zone3, latestUpdateDate: Date())
 
     var watchData = Communication.shared
 
@@ -135,7 +150,7 @@ class Settings: ObservableObject {
 
         if let tempHeartRate = UserDefaults.standard.data(forKey: "currentHeartRateZone") {
             let decoder = JSONDecoder()
-            if let decoded = try? decoder.decode(HeartRateZones.Zones.self, from: tempHeartRate) {
+            if let decoded = try? decoder.decode(HeartRateZoneSettings.self, from: tempHeartRate) {
                 currentHeartRateZone = decoded
             }
         }

@@ -13,7 +13,7 @@ import SwiftUI
 @MainActor
 class HeartRateData: ObservableObject {
 
-    @Published var currentHeartRateZone: HeartRateZones.Zones = .zone3
+    @Published var currentHeartRateZone: HeartRateZoneSettings = HeartRateZoneSettings(zone: .zone3, latestUpdateDate: Date())
     @Published var heartRate: Int = 0
     @Published var lowerBoundary = 136
     @Published var upperBoundary = 148
@@ -40,13 +40,13 @@ class HeartRateData: ObservableObject {
     var belowZoneColor: Color = Color(.sRGB, red: 0.96, green: 0.8, blue: 0.27)
     var inZoneColor: Color = Color(.sRGB, red: 0.39, green: 0.76, blue: 0.4)
     var aboveZoneColor: Color = Color(.sRGB, red: 0.15, green: 0.3, blue: 1.5)
-    var inZoneHaptic: Bool = false
+    var ifInZoneHaptics: Bool = false
 
     var fasterAlert: WKHapticType = .success
     var inZoneAlert: WKHapticType = .notification
     var slowerAlert: WKHapticType = .stop
 
-    func calculateZoneBoundaries(zone: HeartRateZones.Zones, maxHeartRate: Int) {
+    func calculateZoneBoundaries(zone: HeartRateZoneSettings.Zones, maxHeartRate: Int) {
         switch zone {
         case .zone1:
             lowerBoundary = Int(0.68 * Double(maxHeartRate))
@@ -93,12 +93,12 @@ class HeartRateData: ObservableObject {
 
         if let tempHeartRate = UserDefaults.standard.data(forKey: "currentHeartRateZone") {
             let decoder = JSONDecoder()
-            if let decoded = try? decoder.decode(HeartRateZones.Zones.self, from: tempHeartRate) {
+            if let decoded = try? decoder.decode(HeartRateZoneSettings.self, from: tempHeartRate) {
                 currentHeartRateZone = decoded
             }
         }
         // TODO: default max heart rate
-        calculateZoneBoundaries(zone: currentHeartRateZone, maxHeartRate: maxHeartRate ?? 190)
+        calculateZoneBoundaries(zone: currentHeartRateZone.zone, maxHeartRate: maxHeartRate ?? 190)
 
         workoutConfig.activityType = .other
         do {
@@ -167,7 +167,7 @@ class HeartRateData: ObservableObject {
             print("Inside the target zone")
             message = "THAT'S IT!"
             color = inZoneColor
-            if inZoneHaptic {
+            if ifInZoneHaptics {
                 WKInterfaceDevice.current().play(inZoneAlert)
                 usleep(250_000)
                 WKInterfaceDevice.current().play(inZoneAlert)

@@ -34,18 +34,19 @@ class WatchCommunication: NSObject, WCSessionDelegate {
         Task { @MainActor in
             if userInfo["currentHeartRateZone"] != nil {
                 let tempIsWorkoutStarted = userInfo["workoutStarted"] as! Bool?
-                let tempStrHeartRateZone = userInfo["currentHeartRateZone"] as! String?
-                let tempHeartRateZone = HeartRateZones.fromRawValue(raw: tempStrHeartRateZone ?? "Zone 3: 70-80%")
-                //TODO: default value
+                let tempHeartRateZone = HeartRateZoneSettings.fromDictionary(input: userInfo["currentHeartRateZone"] as? [String: Any] ?? [:])
+                // TODO: default value?
+                if (self.heartRate?.currentHeartRateZone.latestUpdateDate)! < tempHeartRateZone.latestUpdateDate {
+                    self.heartRate?.currentHeartRateZone.zone = tempHeartRateZone.zone
+                }
                 //TODO: better way to handle this data
-                self.heartRate?.currentHeartRateZone = tempHeartRateZone
-                self.heartRate?.calculateZoneBoundaries(zone: tempHeartRateZone, maxHeartRate: self.heartRate?.maxHeartRate ?? 190)
+                self.heartRate?.calculateZoneBoundaries(zone: tempHeartRateZone.zone, maxHeartRate: self.heartRate?.maxHeartRate ?? 190)
                 self.heartRate?.isWorkoutStarted = tempIsWorkoutStarted ?? false
             } else {
                 if userInfo["Settings"] != nil {
                     //TODO: Check if `... as? [String: Any]` evaluate to nil, and write to log if it is
                     let settings = Settings.fromDictionary(input: userInfo["Settings"] as? [String: Any] ?? [:])
-                    self.heartRate?.inZoneHaptic = settings.ifInZoneHaptics
+                    self.heartRate?.ifInZoneHaptics = settings.ifInZoneHaptics
                     self.heartRate?.belowZoneColor = settings.belowZoneColor.toStandardColor()
                     self.heartRate?.inZoneColor = settings.inZoneColor.toStandardColor()
                     self.heartRate?.aboveZoneColor = settings.aboveZoneColor.toStandardColor()

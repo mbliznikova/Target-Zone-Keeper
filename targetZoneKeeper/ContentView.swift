@@ -28,17 +28,17 @@ struct ContentView: View {
 
         NavigationStack(root: {
             Form {
-
                 Section(header: Text("Set target zone"), content: {
                     VStack {
                         HStack {
-                            Picker("Target Heart Rate zone", selection: $settingsModel.currentHeartRateZone) {
-                                ForEach(HeartRateZones.Zones.allCases) { value in
+                            Picker("Target Heart Rate zone", selection: $settingsModel.currentHeartRateZone.zone) {
+                                ForEach(HeartRateZoneSettings.Zones.allCases) { value in
                                     Text(value.rawValue)
                                 }
                             }
-                            .onChange(of: settingsModel.currentHeartRateZone, initial: true) {
-                                Communication.shared.sendToWatch(data: ["currentHeartRateZone": settingsModel.currentHeartRateZone.rawValue])
+                            .onChange(of: settingsModel.currentHeartRateZone.zone, initial: false) {
+                                settingsModel.currentHeartRateZone.latestUpdateDate = Date()
+                                Communication.shared.sendToWatch(data: ["currentHeartRateZone": settingsModel.currentHeartRateZone.toDictionary()])
 
                                 do {
                                  let encoder = JSONEncoder()
@@ -53,7 +53,8 @@ struct ContentView: View {
                         }
                         // TODO: check if annother device is reachable and session is active
                         Button(action: {
-                            Communication.shared.sendToWatch(data: ["currentHeartRateZone": settingsModel.currentHeartRateZone.rawValue, "workoutStarted": true])
+                            // TODO: send only the signal to start a workout?
+                            Communication.shared.sendToWatch(data: ["currentHeartRateZone": settingsModel.currentHeartRateZone.toDictionary(), "workoutStarted": true])
                         }) {
                             Text("Start")
                                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
