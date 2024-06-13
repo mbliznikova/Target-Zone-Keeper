@@ -8,60 +8,58 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var heartRateDataModel: HeartRateData
-    @ObservedObject var settingsDemonstrationModel: SettingsDemonstration
+    @ObservedObject var heartRateController: HeartRateController
+    @ObservedObject var settingsDemonstrationModel: SettingsDemonstrationProvider
 
     @State var currentView: String = "welcome"
-
-    @State var isWorkoutStarted: Bool = false
+    
+    func formatHeartRateBoundariesText() -> String {
+        let boundaries = heartRateController.calculateZoneBoundaries()
+        return "\(boundaries.lower) - \(boundaries.upper)"
+    }
 
     var body: some View {
 
         switch currentView {
         case "welcome":
-            if !heartRateDataModel.isWorkoutStarted {
-                if !heartRateDataModel.isTestHaptic {
+            if !heartRateController.isWorkoutStarted {
                     VStack {
-                        Picker("", selection: $heartRateDataModel.currentHeartRateZone.zone) {
-                            ForEach(HeartRateZoneSettings.Zones.allCases) { value in
+                        Picker("", selection: $heartRateController.settings.heartRateZone.value) {
+                            ForEach(HeartRateZone.allCases) { value in
                                 Text("\(value.rawValue)")
                             }
                         }
-                        .onChange(of: heartRateDataModel.currentHeartRateZone.zone, initial: false) {
-                            // TODO: handle the default max heart rate
-                            print("Triggering latestUpdateDate to update")
-                            heartRateDataModel.currentHeartRateZone.latestUpdateDate = Date()
-                            WatchCommunication.shared.sendToPhone(data: ["currentHeartRateZone": heartRateDataModel.currentHeartRateZone.toDictionary()])
-                            heartRateDataModel.calculateZoneBoundaries(zone: heartRateDataModel.currentHeartRateZone.zone, maxHeartRate: heartRateDataModel.maxHeartRate ?? 190)
+                        .onChange(of: heartRateController.settings.heartRateZone.value, initial: false) {
+                            heartRateController.settings.heartRateZone.timestamp = Date()
+                            ConnectionProviderWatch.shared.sendSettings(settings: heartRateController.settings)
                             do {
                              let encoder = JSONEncoder()
-                                if let encoded = try? encoder.encode(heartRateDataModel.currentHeartRateZone) {
-                                    UserDefaults.standard.set(encoded, forKey: "currentHeartRateZone")
+                                if let encoded = try? encoder.encode(heartRateController.settings) {
+                                    UserDefaults.standard.set(encoded, forKey: "settings")
                                 }
                             }
                         }
                         .pickerStyle(.wheel)
                         Spacer()
-                        Text("\(heartRateDataModel.lowerBoundary) - \(heartRateDataModel.upperBoundary)")
+                        Text(formatHeartRateBoundariesText())
                         Spacer()
                         Button("START") {
                             currentView = "main"
                         }
                     }
                     .padding()
-                }
-                else {
-                    VStack {
-                        Text("\(settingsDemonstrationModel.currentHapticName)")
-                            .onChange(of: settingsDemonstrationModel.currentHaptic, initial: true) {
-                                WKInterfaceDevice.current().play(settingsDemonstrationModel.currentHaptic)
-                            }
-                        Button("Try") {
-                            WKInterfaceDevice.current().play(settingsDemonstrationModel.currentHaptic)
-                        }
-                    }
-
-                }
+//                else {
+//                    VStack {
+//                        Text("\(settingsDemonstrationModel.currentHapticName)")
+//                            .onChange(of: settingsDemonstrationModel.currentHaptic, initial: true) {
+//                                WKInterfaceDevice.current().play(settingsDemonstrationModel.currentHaptic)
+//                            }
+//                        Button("Try") {
+//                            WKInterfaceDevice.current().play(settingsDemonstrationModel.currentHaptic)
+//                        }
+//                    }
+//
+//                }
             } else {
                 Text("Measuring heart rate...")
                     .onAppear(perform: {currentView = "main"})
@@ -77,27 +75,27 @@ struct ContentView: View {
             }
         case "main":
             VStack{
-                if heartRateDataModel.heartRate == 0 {
+                if heartRateController.heartRate == 0 {
                     Text("Measuring heart rate...")
                 } else {
-                    Text("\(heartRateDataModel.heartRate)\n")
+                    Text("\(heartRateController.heartRate)\n")
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         //TODO: handle the text color
-                        .foregroundStyle(heartRateDataModel.color == .blue ? .white : .black)
+                        .foregroundStyle(heartRateController.color == .blue ? .white : .black)
                 }
-                Text("\(heartRateDataModel.message)")
+                Text("\(heartRateController.message)")
                     .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                     //TODO: handle the text color
-                    .foregroundStyle(heartRateDataModel.color == .blue ? .white : .black)
+                    .foregroundStyle(heartRateController.color == .blue ? .white : .black)
             }
             .onAppear(perform: {
-                heartRateDataModel.startWorkout()
-                heartRateDataModel.startTimer()
+                heartRateController.startWorkout()
+                heartRateController.startTimer()
             })
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background {
-                heartRateDataModel.color
+                heartRateController.color
                     .ignoresSafeArea()
             }
             .gesture(
@@ -116,7 +114,7 @@ struct ContentView: View {
             VStack{
                 Spacer()
                 Button("STOP") {
-                    heartRateDataModel.stopActivity()
+                    heartRateController.stopActivity()
                     currentView = "welcome"
                 }
             }
@@ -149,5 +147,5 @@ struct ContentView: View {
 
 
 #Preview {
-    ContentView(heartRateDataModel: HeartRateData(), settingsDemonstrationModel: SettingsDemonstration())
+    ContentView(heartRateController: HeartRateController(), settingsDemonstrationModel: SettingsDemonstrationProvider())
 }

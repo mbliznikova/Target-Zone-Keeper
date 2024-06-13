@@ -8,11 +8,11 @@
 import Foundation
 import WatchKit
 
-class SettingsDemonstration: ObservableObject {
+class SettingsDemonstrationProvider: ObservableObject {
 
     @Published var isHapticsListOpen: Bool = false
 
-    var phoneData = WatchCommunication.shared
+    var phoneData = ConnectionProviderWatch.shared
 
     @Published var currentHaptic: WKHapticType = .success
     @Published var currentHapticName: String = ""

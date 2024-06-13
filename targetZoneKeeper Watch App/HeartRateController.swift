@@ -11,17 +11,15 @@ import SwiftUI
 
 
 @MainActor
-class HeartRateData: ObservableObject {
+class HeartRateController: ObservableObject {
+    
+    @Published var settings: Settings = Settings()
 
-    @Published var currentHeartRateZone: HeartRateZoneSettings = HeartRateZoneSettings(zone: .zone3, latestUpdateDate: Date())
     @Published var heartRate: Int = 0
-    @Published var lowerBoundary = 136
-    @Published var upperBoundary = 148
+    
     @Published var isWorkoutStarted = false
 
-    @Published var isTestHaptic = false
-
-    var phoneData = WatchCommunication.shared
+    var phoneData = ConnectionProviderWatch.shared
 
     var hkObject: HKHealthStore?
 
@@ -37,33 +35,29 @@ class HeartRateData: ObservableObject {
     var message: String = ""
     var color: Color = Color.black
 
-    var belowZoneColor: Color = Color(.sRGB, red: 0.96, green: 0.8, blue: 0.27)
-    var inZoneColor: Color = Color(.sRGB, red: 0.39, green: 0.76, blue: 0.4)
-    var aboveZoneColor: Color = Color(.sRGB, red: 0.15, green: 0.3, blue: 1.5)
-    var ifInZoneHaptics: Bool = false
-
-    var fasterAlert: WKHapticType = .success
-    var inZoneAlert: WKHapticType = .notification
-    var slowerAlert: WKHapticType = .stop
-
-    func calculateZoneBoundaries(zone: HeartRateZoneSettings.Zones, maxHeartRate: Int) {
-        switch zone {
+    func calculateZoneBoundaries() -> (lower: Int, upper: Int) {
+        let maxHeartRateValue = maxHeartRate ?? 190
+        // TODO: default values?
+        var multiplierLower: Double
+        var multiplierUpper: Double
+        switch settings.heartRateZone.value {
         case .zone1:
-            lowerBoundary = Int(0.68 * Double(maxHeartRate))
-            upperBoundary = Int(0.73 * Double(maxHeartRate))
+            multiplierLower = 0.68
+            multiplierUpper = 0.73
         case .zone2:
-            lowerBoundary = Int(0.73 * Double(maxHeartRate))
-            upperBoundary = Int(0.80 * Double(maxHeartRate))
+            multiplierLower = 0.73
+            multiplierUpper = 0.80
         case .zone3:
-            lowerBoundary = Int(0.80 * Double(maxHeartRate))
-            upperBoundary = Int(0.87 * Double(maxHeartRate))
+            multiplierLower = 0.80
+            multiplierUpper = 0.87
         case .zone4:
-            lowerBoundary = Int(0.87 * Double(maxHeartRate))
-            upperBoundary = Int(0.93 * Double(maxHeartRate))
+            multiplierLower = 0.87
+            multiplierUpper = 0.93
         case .zone5:
-            lowerBoundary = Int(0.93 * Double(maxHeartRate))
-            upperBoundary = maxHeartRate
+            multiplierLower = 0.93
+            multiplierUpper = 1
         }
+        return (Int(multiplierLower * Double(maxHeartRateValue)), Int(multiplierUpper * Double(maxHeartRateValue)))
     }
 
     init() {
@@ -90,15 +84,13 @@ class HeartRateData: ObservableObject {
         } catch let error {
             print("An error occured while getting user's date of birth: \(error.localizedDescription)")
         }
-
-        if let tempHeartRate = UserDefaults.standard.data(forKey: "currentHeartRateZone") {
+        
+        if let settingsData = UserDefaults.standard.data(forKey: "settings") {
             let decoder = JSONDecoder()
-            if let decoded = try? decoder.decode(HeartRateZoneSettings.self, from: tempHeartRate) {
-                currentHeartRateZone = decoded
+            if let decoded = try? decoder.decode(Settings.self, from: settingsData) {
+                settings = decoded
             }
         }
-        // TODO: default max heart rate
-        calculateZoneBoundaries(zone: currentHeartRateZone.zone, maxHeartRate: maxHeartRate ?? 190)
 
         workoutConfig.activityType = .other
         do {
@@ -126,14 +118,14 @@ class HeartRateData: ObservableObject {
     }
 
     func getHeartRate() {
-        print("GET HEART RATE METHOD - Getting heart rate \(Date())")
+        print("Getting heart rate \(Date())")
 
         let predicate = HKQuery.predicateForSamples(withStart: Date() - 6, end: Date())
         let sortDescriptor = [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
 
         let heartRateQuery = HKSampleQuery(sampleType: HKQuantityType(.heartRate), predicate: predicate, limit: 1, sortDescriptors: sortDescriptor) {(query, result, error) in
             Task {
-                // TODO: add errro handling
+                // TODO: add error handling
                 if let result = result?.first as? HKQuantitySample {
                     self.heartRate = Int(result.quantity.doubleValue(for: HKUnit(from: "count/s")) * 60)
                     print("Heart rate is \(self.heartRate)")
@@ -145,32 +137,36 @@ class HeartRateData: ObservableObject {
     }
 
     func checkTarget() {
-        if heartRate < lowerBoundary {
+        let boundaries = calculateZoneBoundaries()
+        if heartRate < boundaries.lower {
             print("Outside the target zone: too slow")
             message = "FASTER"
-            color = belowZoneColor
-            WKInterfaceDevice.current().play(fasterAlert)
+            color = settings.belowZoneColor.value.toStandardColor()
+            let haptic = phoneData.translateHaptic(haptic: settings.fasterHaptic.value)
+            WKInterfaceDevice.current().play(haptic)
             usleep(250_000)
-            WKInterfaceDevice.current().play(fasterAlert)
+            WKInterfaceDevice.current().play(haptic)
             usleep(250_000)
-            WKInterfaceDevice.current().play(fasterAlert)
+            WKInterfaceDevice.current().play(haptic)
             usleep(250_000)
-            WKInterfaceDevice.current().play(fasterAlert)
-        } else if heartRate > upperBoundary {
+            WKInterfaceDevice.current().play(haptic)
+        } else if heartRate > boundaries.upper {
             print("Outside the target zone: too fast")
             message = "SLOWER"
-            color = aboveZoneColor
-            WKInterfaceDevice.current().play(slowerAlert)
+            color = settings.aboveZoneColor.value.toStandardColor()
+            let haptic = phoneData.translateHaptic(haptic: settings.slowerHaptic.value)
+            WKInterfaceDevice.current().play(haptic)
             usleep(300_000)
-            WKInterfaceDevice.current().play(slowerAlert)
+            WKInterfaceDevice.current().play(haptic)
         } else {
             print("Inside the target zone")
             message = "THAT'S IT!"
-            color = inZoneColor
-            if ifInZoneHaptics {
-                WKInterfaceDevice.current().play(inZoneAlert)
+            color = settings.inZoneColor.value.toStandardColor()
+            let haptic = phoneData.translateHaptic(haptic: settings.inZoneHaptic.value)
+            if settings.ifInZoneHaptics.value {
+                WKInterfaceDevice.current().play(haptic)
                 usleep(250_000)
-                WKInterfaceDevice.current().play(inZoneAlert)
+                WKInterfaceDevice.current().play(haptic)
             }
         }
     }
