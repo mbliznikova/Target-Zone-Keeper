@@ -64,7 +64,7 @@ struct ContentView: View {
                         Button(action: {
                             ConnectionProviderPhone.shared.sendStartWorkout()
                         }) {
-                            Text("Start")
+                            Text("Start workout")
                                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                         }
                         .buttonStyle(.borderedProminent)
