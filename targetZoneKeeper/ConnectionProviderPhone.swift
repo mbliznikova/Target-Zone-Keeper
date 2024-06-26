@@ -65,7 +65,19 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
         assert(WCSession.isSupported(), "WCSsession should be supported!")
         self.mySession.delegate = self
         self.mySession.activate()
-        print("Communication - init(). Session reachable: \(self.mySession.isReachable)")
+        print("ConnectionProviderPhone - init(). Session reachable: \(self.mySession.isReachable)")
+    }
+
+    func sendStartWorkout() {
+        mySession.transferUserInfo(["workoutIsStarted": true])
+        print("ConnectionProviderPhone - sendStartWorkout(). Session is activated: \(mySession.activationState == WCSessionActivationState.activated). Session reachable: \(mySession.isReachable)")
+        Task { @MainActor in
+            if mySession.activationState == WCSessionActivationState.activated {
+                print("The WCSession is active, starting transfer")
+            } else {
+                print("The WCSession is not activated or is not reachable")
+            }
+        }
     }
     
     func sendSettingsToWatch(settings: Settings) {
@@ -74,7 +86,7 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
             let data = try jsonEncoder.encode(settings)
             mySession.transferUserInfo(["settings": data])
 
-            print("WatchCommunication - sendToPhone(). Session is activated: \(mySession.activationState == WCSessionActivationState.activated). Session reachable: \(mySession.isReachable)")
+            print("ConnectionProviderPhone - sendSettingsToWatch(). Session is activated: \(mySession.activationState == WCSessionActivationState.activated). Session reachable: \(mySession.isReachable)")
 
             Task { @MainActor in
                 if mySession.activationState == WCSessionActivationState.activated {

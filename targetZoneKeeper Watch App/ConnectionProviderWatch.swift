@@ -52,20 +52,20 @@ class ConnectionProviderWatch: NSObject, WCSessionDelegate {
         print("userInfo is \(userInfo)")
         //TODO: Pass settings as an object into HeartRateData, make it re-render after settings change
         Task { @MainActor in
-            if userInfo["workoutStarted"] != nil {
-                let tempIsWorkoutStarted = userInfo["workoutStarted"] as? Bool ?? false
-                self.heartRate?.isWorkoutStarted = tempIsWorkoutStarted
-            } else {
-                if userInfo["settings"] != nil {
-                    // TODO: add exception handling
-                    let settings = try! Settings.extractFromUserInfo(userInfo: userInfo)
-                    let existingSettings = self.heartRate?.settings
-                    if existingSettings != nil {
-                        self.heartRate?.settings = existingSettings!.merge(other: settings)
-                    }
-                    self.heartRate?.settings.saveToUserDefaults()
+            if userInfo["settings"] != nil {
+                // TODO: add exception handling
+                let settings = try! Settings.extractFromUserInfo(userInfo: userInfo)
+                let existingSettings = self.heartRate?.settings
+                if existingSettings != nil {
+                    self.heartRate?.settings = existingSettings!.merge(other: settings)
+                }
+                self.heartRate?.settings.saveToUserDefaults()
 //                    self.settingsDemonstration?.currentHaptic = translateHaptic(haptic: settings.currentHaptic)
 //                    self.settingsDemonstration?.currentHapticName = settings.currentHaptic.rawValue
+            } else {
+                if userInfo["workoutIsStarted"] != nil {
+                    let tempIsWorkoutStarted = userInfo["workoutIsStarted"] as? Bool ?? false
+                    self.heartRate?.isWorkoutStarted = tempIsWorkoutStarted
                 }
             }
         }

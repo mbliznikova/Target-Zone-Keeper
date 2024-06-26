@@ -61,13 +61,13 @@ struct ContentView: View {
                             
                         }
                         // TODO: check if another device is reachable and session is active
-//                        Button(action: {
-//                            //ConnectionProvider.shared.sendToWatch(data: ["workoutStarted": true])
-//                        }) {
-//                            Text("Start")
-//                                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-//                        }
-//                        .buttonStyle(.borderedProminent)
+                        Button(action: {
+                            ConnectionProviderPhone.shared.sendStartWorkout()
+                        }) {
+                            Text("Start workout")
+                                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                        }
+                        .buttonStyle(.borderedProminent)
                     }
                 })
 
