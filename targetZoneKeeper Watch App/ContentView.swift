@@ -8,52 +8,77 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    @ObservedObject var heartRateDataModel: HeartRateData
+    @ObservedObject var heartRateController: HeartRateController
+    @ObservedObject var settingsDemonstrationModel: SettingsDemonstrationProvider
+
     @State var currentView: String = "welcome"
     
-    @State var isWorkoutStarted: Bool = false
-    
+    func formatHeartRateBoundariesText() -> String {
+        let boundaries = heartRateController.calculateZoneBoundaries()
+        return "\(boundaries.lower) - \(boundaries.upper)"
+    }
+
     var body: some View {
-        
+
         switch currentView {
         case "welcome":
-            if !heartRateDataModel.isWorkoutStarted {
-                VStack {
-                    Text("Target Zone")
-                        .foregroundStyle(.blue)
-                    Text("\(heartRateDataModel.lowerBoundary) - \(heartRateDataModel.upperBoundary)\n\n")
-                        .foregroundStyle(.blue)
-                    Button("START") {
-                        currentView = "main"
+            if !heartRateController.isWorkoutStarted {
+                    VStack {
+                        Picker("", selection: $heartRateController.settings.heartRateZone.value) {
+                            ForEach(HeartRateZone.allCases) { value in
+                                Text("\(value.rawValue)")
+                            }
+                        }
+                        .onChange(of: heartRateController.settings.heartRateZone.value, initial: false) {
+                            heartRateController.settings.heartRateZone.timestamp = Date()
+                            ConnectionProviderWatch.shared.sendSettings(settings: heartRateController.settings)
+                            heartRateController.settings.saveToUserDefaults()
+                        }
+                        .pickerStyle(.wheel)
+                        Spacer()
+                        Text(formatHeartRateBoundariesText())
+                        Spacer()
+                        Button("START") {
+                            currentView = "main"
+                        }
                     }
-                }
-                .padding()
+                    .padding()
             } else {
                 Text("Measuring heart rate...")
                     .onAppear(perform: {currentView = "main"})
             }
+        case "test":
+            VStack {
+                HStack {
+                    Text("Demonstarting")
+                }
+                Button("Back") {
+                    currentView = "welcome"
+                }
+            }
         case "main":
             VStack{
-                if heartRateDataModel.heartRate == 0 {
+                if heartRateController.heartRate == 0 {
                     Text("Measuring heart rate...")
                 } else {
-                    Text("\(heartRateDataModel.heartRate)\n")
+                    Text("\(heartRateController.heartRate)\n")
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                        .foregroundStyle(heartRateDataModel.color == .blue ? .white : .black)
+                        //TODO: handle the text color
+                        .foregroundStyle(heartRateController.color == .blue ? .white : .black)
                 }
-                Text("\(heartRateDataModel.message)")
+                Text("\(heartRateController.message)")
                     .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                    .foregroundStyle(heartRateDataModel.color == .blue ? .white : .black)
+                    //TODO: handle the text color
+                    .foregroundStyle(heartRateController.color == .blue ? .white : .black)
             }
             .onAppear(perform: {
-                heartRateDataModel.startWorkout()
-                heartRateDataModel.startTimer()
+                heartRateController.startWorkout()
+                heartRateController.startTimer()
             })
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background {
-                heartRateDataModel.color
+                heartRateController.color
                     .ignoresSafeArea()
             }
             .gesture(
@@ -72,7 +97,7 @@ struct ContentView: View {
             VStack{
                 Spacer()
                 Button("STOP") {
-                    heartRateDataModel.stopActivity()
+                    heartRateController.stopActivity()
                     currentView = "welcome"
                 }
             }
@@ -105,5 +130,5 @@ struct ContentView: View {
 
 
 #Preview {
-    ContentView(heartRateDataModel: HeartRateData())
+    ContentView(heartRateController: HeartRateController(), settingsDemonstrationModel: SettingsDemonstrationProvider())
 }

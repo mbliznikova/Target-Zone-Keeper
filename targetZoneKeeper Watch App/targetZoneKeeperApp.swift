@@ -9,11 +9,12 @@ import SwiftUI
 
 @main
 struct targetZoneKeeper_Watch_AppApp: App {
-    @StateObject var heartRateData: HeartRateData = HeartRateData()
+    @StateObject var heartRateData: HeartRateController = HeartRateController()
+    @StateObject var settingsDemonstrationData: SettingsDemonstrationProvider = SettingsDemonstrationProvider()
     
     var body: some Scene {
         WindowGroup {
-            ContentView(heartRateDataModel: heartRateData)
+            ContentView(heartRateController: heartRateData, settingsDemonstrationModel: settingsDemonstrationData)
         }
     }
 }
