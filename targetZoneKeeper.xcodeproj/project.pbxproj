@@ -27,6 +27,7 @@
 		F37CB3B32BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3B22BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITests.swift */; };
 		F37CB3B52BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3B42BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITestsLaunchTests.swift */; };
 		F397B3AF2BE151F600765055 /* HeartRateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F397B3AE2BE151F600765055 /* HeartRateController.swift */; };
+		F39D1CDF2C26422E007907E1 /* SettingsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39D1CDE2C26422E007907E1 /* SettingsLoader.swift */; };
 		F3BB981B2C0FADDB0080599A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F322DE742BF51BFD00BE9E9D /* Settings.swift */; };
 /* End PBXBuildFile section */
 
@@ -110,6 +111,7 @@
 		F38AD0272BE2A1E100354272 /* targetZoneKeeper Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "targetZoneKeeper Watch App.entitlements"; sourceTree = "<group>"; };
 		F38AD0282BE2A1F000354272 /* targetZoneKeeper-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "targetZoneKeeper-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		F397B3AE2BE151F600765055 /* HeartRateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateController.swift; sourceTree = "<group>"; };
+		F39D1CDE2C26422E007907E1 /* SettingsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +193,7 @@
 				F37CB3712BDB2D8800BECFEB /* ContentView.swift */,
 				F3227DB42BDC66DD0031D823 /* ConnectionProviderPhone.swift */,
 				F322DE742BF51BFD00BE9E9D /* Settings.swift */,
+				F39D1CDE2C26422E007907E1 /* SettingsLoader.swift */,
 				F37CB3732BDB2D8900BECFEB /* Assets.xcassets */,
 				F37CB3752BDB2D8900BECFEB /* Preview Content */,
 			);
@@ -489,6 +492,7 @@
 				F37CB3702BDB2D8800BECFEB /* targetZoneKeeperApp.swift in Sources */,
 				F322DE752BF51BFD00BE9E9D /* Settings.swift in Sources */,
 				F3227DB52BDC66DD0031D823 /* ConnectionProviderPhone.swift in Sources */,
+				F39D1CDF2C26422E007907E1 /* SettingsLoader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

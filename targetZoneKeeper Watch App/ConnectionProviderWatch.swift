@@ -63,6 +63,7 @@ class ConnectionProviderWatch: NSObject, WCSessionDelegate {
                     if existingSettings != nil {
                         self.heartRate?.settings = existingSettings!.merge(other: settings)
                     }
+                    self.heartRate?.settings.saveToUserDefaults()
 //                    self.settingsDemonstration?.currentHaptic = translateHaptic(haptic: settings.currentHaptic)
 //                    self.settingsDemonstration?.currentHapticName = settings.currentHaptic.rawValue
                 }

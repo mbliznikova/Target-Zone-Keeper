@@ -9,35 +9,38 @@ import Foundation
 import SwiftUI
 
 
-struct TimestampedValue<Value>: Encodable, Decodable where Value: Encodable, Value: Decodable {
-    typealias SerializedValue = Dictionary<String, Encodable>
-    
+struct TimestampedValue<Value>: Encodable, Decodable, Equatable where Value: Encodable, Value: Decodable, Value: Equatable {
+
     var value: Value
     var timestamp: Date
-    
+
     init(value: Value, timestamp: Date) {
         self.value = value
         self.timestamp = timestamp
     }
-    
+
     init(value: Value) {
         self.init(value: value, timestamp: Date())
     }
-    
+
     func merge(other: Self) -> Self {
         if self.timestamp >= other.timestamp {
             return self
         }
         return other
     }
-    
+
     mutating func update(value: Value) {
         self.value = value
+        self.updateTime()
+    }
+
+    mutating func updateTime() {
         self.timestamp = Date()
     }
 }
 
-struct ColorSetting: Encodable, Decodable {
+struct ColorSetting: Encodable, Decodable, Equatable {
     var red: Double
     var green: Double
     var blue: Double
@@ -73,7 +76,7 @@ enum HeartRateZone: String, CaseIterable, Identifiable, Encodable, Decodable {
     }
 }
 
-final class Settings: ObservableObject, Encodable, Decodable {
+final class Settings: Encodable, Decodable {
     typealias TimestampedHeartRateZone = TimestampedValue<HeartRateZone>
     typealias TimestampedBool = TimestampedValue<Bool>
     typealias TimestampedColorSetting = TimestampedValue<ColorSetting>
@@ -90,7 +93,7 @@ final class Settings: ObservableObject, Encodable, Decodable {
     var fasterHaptic: TimestampedHaptics = TimestampedHaptics(value: .success)
     var inZoneHaptic: TimestampedHaptics = TimestampedHaptics(value: .notification)
     var slowerHaptic: TimestampedHaptics = TimestampedHaptics(value: .stop)
-    
+
     func merge(other: Settings) -> Settings {
         let result = Settings()
         result.ifInZoneHaptics = ifInZoneHaptics.merge(other: other.ifInZoneHaptics)
@@ -103,7 +106,7 @@ final class Settings: ObservableObject, Encodable, Decodable {
         result.heartRateZone = heartRateZone.merge(other: other.heartRateZone)
         return result
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case ifInZoneHaptics
         case belowZoneColor
@@ -114,20 +117,28 @@ final class Settings: ObservableObject, Encodable, Decodable {
         case slowerHaptic
         case heartRateZone
     }
-    
+
     static func extractFromUserInfo(userInfo: [String: Any]) throws -> Settings {
         guard let settingsWithAnyType = userInfo["settings"] else {
             throw NSError(domain: "tzk_settings_missing", code: 1)
         }
-        guard let settingsString = settingsWithAnyType as? String else {
-            throw NSError(domain: "tzk_settings_not_string", code: 1)
+
+        guard let settingsData = settingsWithAnyType as? Data else {
+            throw NSError(domain: "tzk_settings_not_data", code: 1)
         }
-        guard let settingsData = settingsString.data(using: .utf8) else {
-            throw NSError(domain: "tzk_settings_failed_convert_data", code: 1)
-        }
-        
+
         let jsonDecoder = JSONDecoder()
         let result = try jsonDecoder.decode(Settings.self, from: settingsData)
         return result
     }
+
+    func saveToUserDefaults() {
+        do {
+         let encoder = JSONEncoder()
+            if let encoded = try? encoder.encode(self) {
+                UserDefaults.standard.set(encoded, forKey: "settings")
+            }
+        }
+    }
+
 }

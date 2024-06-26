@@ -32,12 +32,7 @@ struct ContentView: View {
                         .onChange(of: heartRateController.settings.heartRateZone.value, initial: false) {
                             heartRateController.settings.heartRateZone.timestamp = Date()
                             ConnectionProviderWatch.shared.sendSettings(settings: heartRateController.settings)
-                            do {
-                             let encoder = JSONEncoder()
-                                if let encoded = try? encoder.encode(heartRateController.settings) {
-                                    UserDefaults.standard.set(encoded, forKey: "settings")
-                                }
-                            }
+                            heartRateController.settings.saveToUserDefaults()
                         }
                         .pickerStyle(.wheel)
                         Spacer()
@@ -48,18 +43,6 @@ struct ContentView: View {
                         }
                     }
                     .padding()
-//                else {
-//                    VStack {
-//                        Text("\(settingsDemonstrationModel.currentHapticName)")
-//                            .onChange(of: settingsDemonstrationModel.currentHaptic, initial: true) {
-//                                WKInterfaceDevice.current().play(settingsDemonstrationModel.currentHaptic)
-//                            }
-//                        Button("Try") {
-//                            WKInterfaceDevice.current().play(settingsDemonstrationModel.currentHaptic)
-//                        }
-//                    }
-//
-//                }
             } else {
                 Text("Measuring heart rate...")
                     .onAppear(perform: {currentView = "main"})

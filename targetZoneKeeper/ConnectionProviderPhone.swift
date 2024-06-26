@@ -13,6 +13,8 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
 
     var settings: Settings = Settings()
 
+    var settingsLoader: SettingsLoader? = nil
+
     @Published var mySession: WCSession
 
     func sessionDidBecomeInactive(_ session: WCSession) {
@@ -35,8 +37,7 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
                 print("The user info is still transferring: \(userInfoTransfer.userInfo). Will cancel this attempt and retry.")
                 // TODO: think about going through outstandingUserInfoTransfers and cancel all outstanding transfers, not only the current one? 
                 userInfoTransfer.cancel()
-//                usleep(1_000_000)
-//                self.sendToWatch(data: userInfoTransfer.userInfo)
+                usleep(1_000_000)
                 }
         }
         else {
@@ -48,10 +49,8 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
         Task { @MainActor in
             if userInfo["settings"] != nil {
                 let settings = try! Settings.extractFromUserInfo(userInfo: userInfo)
-                print("Received the data: \(settings.heartRateZone)")
-                print("Existing data: \(self.settings.heartRateZone)")
                 self.settings = self.settings.merge(other: settings)
-                print("Result: \(self.settings.heartRateZone)")
+                self.settingsLoader?.settings = self.settings.merge(other: settings)
             }
         }
     }
@@ -68,31 +67,18 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
         self.mySession.activate()
         print("Communication - init(). Session reachable: \(self.mySession.isReachable)")
     }
-
-//    func sendToWatch(data: [String: Any]) {
-//        mySession.transferUserInfo(data)
-//        print("Communication - sendToWatch(). Session is activated: \(mySession.activationState == WCSessionActivationState.activated). Session reachable: \(mySession.isReachable)")
-//        Task { @MainActor in
-//            if mySession.activationState == WCSessionActivationState.activated {
-//                print("The WCSession is activated, starting transfer")
-//                print("Sending Data: \(data)")
-//
-//            } else {
-//                print("The WCSession is not activated or is not reachable")
-//            }
-//        }
-//    }
     
     func sendSettingsToWatch(settings: Settings) {
         let jsonEncoder = JSONEncoder()
         do {
             let data = try jsonEncoder.encode(settings)
             mySession.transferUserInfo(["settings": data])
+
             print("WatchCommunication - sendToPhone(). Session is activated: \(mySession.activationState == WCSessionActivationState.activated). Session reachable: \(mySession.isReachable)")
+
             Task { @MainActor in
                 if mySession.activationState == WCSessionActivationState.activated {
                     print("The WCSession is active, starting transfer")
-                    print("Sending data: \(data)")
                 } else {
                     print("The WCSession is not activated or is not reachable")
                 }
@@ -101,8 +87,7 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
             print("sendSettings: error encoding json: \(error)")
         }
     }
-    
+
     func sendHapticTestToWatch(haptic: Haptics) {
-        
     }
 }
