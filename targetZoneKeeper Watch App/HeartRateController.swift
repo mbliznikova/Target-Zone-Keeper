@@ -191,11 +191,12 @@ class HeartRateController: ObservableObject {
                 if workout != nil {
                     print("Workout is finished")
                 } else {
-                    print("Error while trying to finish workout")
+                    print("Error while trying to finish workout: \(String(describing: error))")
                 }
             }
         }
         self.timer?.invalidate()
+        isWorkoutStarted = false
         print("Timer has been invalidated")
     }
 
