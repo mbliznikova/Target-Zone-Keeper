@@ -84,15 +84,17 @@ class HeartRateController: ObservableObject {
         } catch let error {
             print("An error occured while getting user's date of birth: \(error.localizedDescription)")
         }
-        
         if let settingsData = UserDefaults.standard.data(forKey: "settings") {
             let decoder = JSONDecoder()
             if let decoded = try? decoder.decode(Settings.self, from: settingsData) {
                 settings = decoded
             }
         }
-
         workoutConfig.activityType = .other
+    }
+
+    func startWorkout() {
+        print("Starting workout")
         do {
             workoutSession = try HKWorkoutSession(healthStore: hkObject!, configuration: workoutConfig)
             workoutBuilder = workoutSession?.associatedWorkoutBuilder()
@@ -102,11 +104,6 @@ class HeartRateController: ObservableObject {
             //TODO: handle the error better?
             print("Can't create workout session and / or builder: \(error.localizedDescription)")
         }
-
-    }
-
-    func startWorkout() {
-        print("Starting workout")
         workoutSession?.startActivity(with: Date())
         workoutBuilder?.beginCollection(withStart: Date()) {(success, error) in
             if let error = error {
