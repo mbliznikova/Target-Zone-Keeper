@@ -7,11 +7,17 @@
 
 import SwiftUI
 
+enum Views {
+    case welcome
+    case main
+    case stop
+}
+
 struct ContentView: View {
     @ObservedObject var heartRateController: HeartRateController
     @ObservedObject var settingsDemonstrationModel: SettingsDemonstrationProvider
 
-    @State var currentView: String = "welcome"
+    @State var currentView: Views = .welcome
     
     func formatHeartRateBoundariesText() -> String {
         let boundaries = heartRateController.calculateZoneBoundaries()
@@ -21,7 +27,7 @@ struct ContentView: View {
     var body: some View {
 
         switch currentView {
-        case "welcome":
+        case .welcome:
             if !heartRateController.isWorkoutStarted {
                     VStack {
                         Picker("", selection: $heartRateController.settings.heartRateZone.value) {
@@ -39,27 +45,18 @@ struct ContentView: View {
                         Text(formatHeartRateBoundariesText())
                         Spacer()
                         Button("START") {
-                            currentView = "main"
+                            currentView = .main
                         }
                     }
                     .padding()
             } else {
-                Text("Measuring heart rate...")
-                    .onAppear(perform: {currentView = "main"})
+                StartingWorkoutView()
+                    .onAppear(perform: {currentView = .main})
             }
-        case "test":
-            VStack {
-                HStack {
-                    Text("Demonstarting")
-                }
-                Button("Back") {
-                    currentView = "welcome"
-                }
-            }
-        case "main":
+        case .main:
             VStack{
                 if heartRateController.heartRate == 0 {
-                    Text("Measuring heart rate...")
+                    StartingWorkoutView()
                 } else {
                     Text("\(heartRateController.heartRate)\n")
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -88,17 +85,17 @@ struct ContentView: View {
                         if abs(value.translation.width) > abs(value.translation.height) {
                             if value.translation.width < 0 {
                                 // Left swipe
-                                currentView = "stop"
+                                currentView = .stop
                             }
                         }
                     }
             )
-        case "stop":
+        case .stop:
             VStack{
                 Spacer()
                 Button("STOP") {
                     heartRateController.stopActivity()
-                    currentView = "welcome"
+                    currentView = .welcome
                 }
             }
             .padding()
@@ -108,7 +105,6 @@ struct ContentView: View {
                     .ignoresSafeArea()
             }
             .gesture(
-                // TODO: Debug why gesture doesn't work here
                 DragGesture(minimumDistance: 20, coordinateSpace: .local)
                     .onEnded { value in
                         if abs(value.translation.width) > abs(value.translation.height) {
@@ -117,17 +113,20 @@ struct ContentView: View {
                                 print("Left swipe")
                             } else {
                                 print("Right swipe")
-                                currentView = "main"
+                                currentView = .main
                             }
                         }
                     }
             )
-        default:
-            Text("I'm just a stub")
         }
     }
 }
 
+struct StartingWorkoutView: View {
+    var body: some View {
+        Text("Measuring heart rate...")
+    }
+}
 
 #Preview {
     ContentView(heartRateController: HeartRateController(), settingsDemonstrationModel: SettingsDemonstrationProvider())
