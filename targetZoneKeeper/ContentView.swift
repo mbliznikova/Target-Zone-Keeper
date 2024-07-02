@@ -76,8 +76,9 @@ struct ContentView: View {
                         destination: HapticTypesView(
                             zoneAlert: $settingsLoader.settings.fasterHaptic.value,
                             onSelect: {
-                                ConnectionProviderPhone.shared.sendHapticTestToWatch(haptic: settingsLoader.settings.fasterHaptic.value)
+                                ConnectionProviderPhone.shared.sendHapticDemo(active: true, haptic: settingsLoader.settings.fasterHaptic.value)
                             }, onListDisappear: {
+                                ConnectionProviderPhone.shared.sendHapticDemo(active: false)
                                 settingsLoader.settings.fasterHaptic.updateTime()
                                 sendToWatchAndSave()
                             }
@@ -95,8 +96,9 @@ struct ContentView: View {
                         destination: HapticTypesView(
                             zoneAlert: $settingsLoader.settings.inZoneHaptic.value,
                             onSelect: {
-                                ConnectionProviderPhone.shared.sendHapticTestToWatch(haptic: settingsLoader.settings.inZoneHaptic.value)
+                                ConnectionProviderPhone.shared.sendHapticDemo(active: true, haptic: settingsLoader.settings.inZoneHaptic.value)
                             }, onListDisappear: {
+                                ConnectionProviderPhone.shared.sendHapticDemo(active: false)
                                 settingsLoader.settings.inZoneHaptic.updateTime()
                                 sendToWatchAndSave()
                             }
@@ -113,8 +115,9 @@ struct ContentView: View {
                         destination: HapticTypesView(
                             zoneAlert: $settingsLoader.settings.slowerHaptic.value,
                             onSelect: {
-                                ConnectionProviderPhone.shared.sendHapticTestToWatch(haptic: settingsLoader.settings.slowerHaptic.value)
+                                ConnectionProviderPhone.shared.sendHapticDemo(active: true, haptic: settingsLoader.settings.slowerHaptic.value)
                             }, onListDisappear: {
+                                ConnectionProviderPhone.shared.sendHapticDemo(active: false)
                                 settingsLoader.settings.slowerHaptic.updateTime()
                                 sendToWatchAndSave()
                             }

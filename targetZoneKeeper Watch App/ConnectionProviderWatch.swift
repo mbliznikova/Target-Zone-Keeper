@@ -50,7 +50,6 @@ class ConnectionProviderWatch: NSObject, WCSessionDelegate {
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any]) {
         print("Getting data from the phone...")
         print("userInfo is \(userInfo)")
-        //TODO: Pass settings as an object into HeartRateData, make it re-render after settings change
         Task { @MainActor in
             if userInfo["settings"] != nil {
                 // TODO: add exception handling
@@ -60,12 +59,30 @@ class ConnectionProviderWatch: NSObject, WCSessionDelegate {
                     self.heartRate?.settings = existingSettings!.merge(other: settings)
                 }
                 self.heartRate?.settings.saveToUserDefaults()
-//                    self.settingsDemonstration?.currentHaptic = translateHaptic(haptic: settings.currentHaptic)
-//                    self.settingsDemonstration?.currentHapticName = settings.currentHaptic.rawValue
             } else {
                 if userInfo["workoutIsStarted"] != nil {
                     let tempIsWorkoutStarted = userInfo["workoutIsStarted"] as? Bool ?? false
                     self.heartRate?.isWorkoutStarted = tempIsWorkoutStarted
+                }
+                if userInfo["hapticDemo"] != nil {
+                    let hapticDemo = userInfo["hapticDemo"] as! [String: Any?]
+
+                    let demoIsRunning = hapticDemo["hapticDemoIsRunning"] as? Bool ?? false
+                    self.settingsDemonstration?.isDemoRunning = demoIsRunning
+
+                    guard let haptic = hapticDemo["haptic"] else {
+                        throw NSError(domain: "userInfo_key_missing", code: 1)
+                    }
+                    if haptic != nil {
+                        do {
+                            let jsonDecoder = JSONDecoder()
+                            let result = try jsonDecoder.decode(Haptics.self, from: haptic as! Data)
+                            self.settingsDemonstration?.haptic = translateHaptic(haptic: result)
+                            self.settingsDemonstration?.hapticName = result.rawValue
+                        } catch {
+                            print("Error while decoding userInfo data: \(error)")
+                        }
+                    }
                 }
             }
         }

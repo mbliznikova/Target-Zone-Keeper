@@ -15,7 +15,7 @@ enum Views {
 
 struct ContentView: View {
     @ObservedObject var heartRateController: HeartRateController
-    @ObservedObject var settingsDemonstrationModel: SettingsDemonstrationProvider
+    @ObservedObject var settingsDemonstrationProvider: SettingsDemonstrationProvider
 
     @State var currentView: Views = .welcome
     
@@ -29,6 +29,15 @@ struct ContentView: View {
         switch currentView {
         case .welcome:
             if !heartRateController.isWorkoutStarted {
+                if settingsDemonstrationProvider.isDemoRunning {
+                    Text("\(settingsDemonstrationProvider.hapticName)\n")
+                        .onChange(of: settingsDemonstrationProvider.haptic, initial: true) {
+                            WKInterfaceDevice.current().play(settingsDemonstrationProvider.haptic)
+                        }
+                    Button("Try") {
+                        WKInterfaceDevice.current().play(settingsDemonstrationProvider.haptic)
+                    }
+                } else {
                     VStack {
                         Picker("", selection: $heartRateController.settings.heartRateZone.value) {
                             ForEach(HeartRateZone.allCases) { value in
@@ -49,6 +58,7 @@ struct ContentView: View {
                         }
                     }
                     .padding()
+                }
             } else {
                 StartingWorkoutView()
                     .onAppear(perform: {currentView = .main})
@@ -129,5 +139,5 @@ struct StartingWorkoutView: View {
 }
 
 #Preview {
-    ContentView(heartRateController: HeartRateController(), settingsDemonstrationModel: SettingsDemonstrationProvider())
+    ContentView(heartRateController: HeartRateController(), settingsDemonstrationProvider: SettingsDemonstrationProvider())
 }
