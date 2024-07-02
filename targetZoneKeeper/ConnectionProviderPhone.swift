@@ -68,9 +68,8 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
         print("ConnectionProviderPhone - init(). Session reachable: \(self.mySession.isReachable)")
     }
 
-    func sendStartWorkout() {
-        mySession.transferUserInfo(["workoutIsStarted": true])
-        print("ConnectionProviderPhone - sendStartWorkout(). Session is activated: \(mySession.activationState == WCSessionActivationState.activated). Session reachable: \(mySession.isReachable)")
+    func checkSessionStatus() {
+        print("ConnectionProviderPhone. Session is activated: \(mySession.activationState == WCSessionActivationState.activated). Session reachable: \(mySession.isReachable)")
         Task { @MainActor in
             if mySession.activationState == WCSessionActivationState.activated {
                 print("The WCSession is active, starting transfer")
@@ -79,27 +78,31 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
             }
         }
     }
-    
+
+    func sendStartWorkout() {
+        mySession.transferUserInfo(["workoutIsStarted": true])
+        checkSessionStatus()
+    }
+
+    func sendHapticDemo(active: Bool, haptic: Haptics? = nil) {
+        let jsonEncoder = JSONEncoder()
+        do {
+            let hapticData = try jsonEncoder.encode(haptic)
+            mySession.transferUserInfo(["hapticDemo": ["hapticDemoIsRunning": active, "haptic": hapticData]])
+            checkSessionStatus()
+        } catch {
+            print("sendHapticDemo: error encoding json: \(error)")
+        }
+    }
+
     func sendSettingsToWatch(settings: Settings) {
         let jsonEncoder = JSONEncoder()
         do {
             let data = try jsonEncoder.encode(settings)
             mySession.transferUserInfo(["settings": data])
-
-            print("ConnectionProviderPhone - sendSettingsToWatch(). Session is activated: \(mySession.activationState == WCSessionActivationState.activated). Session reachable: \(mySession.isReachable)")
-
-            Task { @MainActor in
-                if mySession.activationState == WCSessionActivationState.activated {
-                    print("The WCSession is active, starting transfer")
-                } else {
-                    print("The WCSession is not activated or is not reachable")
-                }
-            }
+            checkSessionStatus()
         } catch {
             print("sendSettings: error encoding json: \(error)")
         }
-    }
-
-    func sendHapticTestToWatch(haptic: Haptics) {
     }
 }

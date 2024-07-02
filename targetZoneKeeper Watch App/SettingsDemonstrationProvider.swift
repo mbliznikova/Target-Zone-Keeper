@@ -10,12 +10,12 @@ import WatchKit
 
 class SettingsDemonstrationProvider: ObservableObject {
 
-    @Published var isHapticsListOpen: Bool = false
+    @Published var isDemoRunning: Bool = false
+
+    @Published var haptic: WKHapticType = .success
+    @Published var hapticName: String = ""
 
     var phoneData = ConnectionProviderWatch.shared
-
-    @Published var currentHaptic: WKHapticType = .success
-    @Published var currentHapticName: String = ""
 
     init() {
         phoneData.settingsDemonstration = self
