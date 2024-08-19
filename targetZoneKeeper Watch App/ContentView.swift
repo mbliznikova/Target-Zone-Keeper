@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import Mixpanel
+
 enum Views {
     case welcome
     case main
@@ -54,6 +56,7 @@ struct ContentView: View {
                         Text(formatHeartRateBoundariesText())
                         Spacer()
                         Button("START") {
+                            Mixpanel.mainInstance().track(event: "Start workout")
                             currentView = .main
                         }
                     }

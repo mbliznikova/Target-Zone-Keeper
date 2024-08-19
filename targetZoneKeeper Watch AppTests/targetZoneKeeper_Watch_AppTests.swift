@@ -26,6 +26,122 @@ final class targetZoneKeeper_Watch_AppTests: XCTestCase {
         // Tests marked async will run the test method on an arbitrary thread managed by the Swift runtime.
     }
 
+    func createSettings() -> Settings {
+        return Settings()
+    }
+
+    @MainActor func createHeartRateController() -> HeartRateController {
+        return HeartRateController()
+    }
+
+
+    @MainActor func testCalculateZoneBoundariesWhenZoneOneReturnsLowest() throws {
+        let controller = createHeartRateController()
+
+        controller.maxHeartRate = 182
+        controller.settings.heartRateZone.value = .zone1
+
+        let expectedLowerBoundary = 123
+        let expectedUpperBoundary = 132
+
+        let boundaries = controller.calculateZoneBoundaries()
+
+        XCTAssertEqual(boundaries.0, expectedLowerBoundary)
+        XCTAssertEqual(boundaries.1, expectedUpperBoundary)
+    }
+
+    @MainActor func testCalculateZoneBoundariesWhenZoneFiveReturnsHighest() throws {
+        let controller = createHeartRateController()
+
+        controller.maxHeartRate = 182
+        controller.settings.heartRateZone.value = HeartRateZone.zone5
+
+        let expectedLowerBoundary = 169
+        let expectedUpperBoundary = controller.maxHeartRate
+
+        let boundaries = controller.calculateZoneBoundaries()
+
+        XCTAssertEqual(boundaries.0, expectedLowerBoundary)
+        XCTAssertEqual(boundaries.1, expectedUpperBoundary)
+    }
+
+    @MainActor func testStartTimerMeasuresElapsedWorkoutTimeCorrectly() async throws {
+        let controller = createHeartRateController()
+
+        controller.settings.heartRateZone.value = .zone1
+        controller.maxHeartRate = 182
+
+        let belowZoneHeartRate = 110
+        let aboveZoneHeartRate = 150
+        let inZoneHeartRate = 125
+
+        controller.startWorkout()
+        controller.startTimer()
+
+        controller.heartRate = belowZoneHeartRate
+        try await Task.sleep(nanoseconds: 10_000_000_000)
+
+        for _ in 1...5 {
+            controller.heartRate = inZoneHeartRate
+            try await Task.sleep(nanoseconds: 4_000_000_000)
+        }
+
+        controller.heartRate = aboveZoneHeartRate
+        try await Task.sleep(nanoseconds: 5_000_000_000)
+
+        controller.stopActivity()
+
+        print("RESULTS ARE: total \(controller.totaltimeElapsed.components.seconds), in zone \(controller.inZoneTime.components.seconds), out of zone \(controller.outOfZoneTime.components.seconds)")
+
+        // TODO: add asserts here
+    }
+
+    @MainActor func testCheckTargetWhenBelowZoneSetsBelowZoneMessage() {
+        let controller = createHeartRateController()
+
+        controller.settings.heartRateZone.value = .zone1
+        controller.maxHeartRate = 182
+
+        let belowZoneHeartRate = 110
+
+        controller.heartRate = belowZoneHeartRate
+        controller.checkTarget()
+
+        print(controller.color)
+        XCTAssertEqual(controller.message, "FASTER")
+    }
+
+    @MainActor func testCheckTargetWhenInZoneSetsInZoneMessage() {
+        let controller = createHeartRateController()
+
+        controller.settings.heartRateZone.value = .zone1
+        controller.maxHeartRate = 182
+
+        let inZoneHeartRate = 125
+
+        controller.heartRate = inZoneHeartRate
+        controller.checkTarget()
+
+        print(controller.color)
+        XCTAssertEqual(controller.message, "THAT'S IT!")
+    }
+
+    @MainActor func testCheckTargetWhenAboveZoneSetsAboveZoneMessage() {
+        let controller = createHeartRateController()
+
+        controller.settings.heartRateZone.value = .zone1
+        controller.maxHeartRate = 182
+
+        let aboveZoneHeartRate = 150
+
+        controller.heartRate = aboveZoneHeartRate
+        controller.checkTarget()
+
+        print(controller.color)
+        XCTAssertEqual(controller.message, "SLOWER")
+    }
+
+
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
         self.measure {
