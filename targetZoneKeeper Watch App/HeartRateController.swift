@@ -8,11 +8,12 @@
 import Foundation
 import HealthKit
 import SwiftUI
+import Mixpanel
 
 
 @MainActor
 class HeartRateController: ObservableObject {
-    
+
     @Published var settings: Settings = Settings()
 
     @Published var heartRate: Int = 0
@@ -31,6 +32,10 @@ class HeartRateController: ObservableObject {
     var maxHeartRate: Int?
 
     var timer: Timer?
+
+    var inZoneTime: Duration = Duration(secondsComponent: 0, attosecondsComponent: 0)
+    var outOfZoneTime: Duration = Duration(secondsComponent: 0, attosecondsComponent: 0)
+    var totalWorkoutTime: Duration = Duration(secondsComponent: 0, attosecondsComponent: 0)
 
     var message: String = ""
     var color: Color = Color.black
@@ -82,6 +87,10 @@ class HeartRateController: ObservableObject {
             userAge = currentYear - (birthday?.year ?? 2000) + (currentMonth >= birthday?.month ?? 1 ? 0 : -1)
             maxHeartRate = Int(208.0 - (0.7 * Double(userAge ?? currentYear - 2000)))
         } catch let error {
+            Mixpanel.mainInstance().track(event: "Exceptions", properties: [
+                "Source": "HeartRateController class - init()",
+                "Description ": "An error occured while getting user's date of birth: \(error.localizedDescription)"
+            ])
             print("An error occured while getting user's date of birth: \(error.localizedDescription)")
         }
         if let settingsData = UserDefaults.standard.data(forKey: "settings") {
@@ -95,6 +104,9 @@ class HeartRateController: ObservableObject {
 
     func startWorkout() {
         print("Starting workout")
+
+        Mixpanel.mainInstance().track(event: "Start workout")
+
         do {
             workoutSession = try HKWorkoutSession(healthStore: hkObject!, configuration: workoutConfig)
             workoutBuilder = workoutSession?.associatedWorkoutBuilder()
@@ -102,6 +114,10 @@ class HeartRateController: ObservableObject {
             print("Workout session and builder have been created successfully")
         } catch let error {
             //TODO: handle the error better?
+            Mixpanel.mainInstance().track(event: "Exceptions", properties: [
+                "Source": "HeartRateController class - startWorkout()",
+                "Description ": "Can't create workout session and / or builder: \(error.localizedDescription)"
+            ])
             print("Can't create workout session and / or builder: \(error.localizedDescription)")
         }
         workoutSession?.startActivity(with: Date())
@@ -116,7 +132,6 @@ class HeartRateController: ObservableObject {
 
     func getHeartRate() {
         print("Getting heart rate \(Date())")
-
         let predicate = HKQuery.predicateForSamples(withStart: Date() - 6, end: Date())
         let sortDescriptor = [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
 
@@ -130,6 +145,7 @@ class HeartRateController: ObservableObject {
                 }
             }
         }
+
         hkObject?.execute(heartRateQuery)
     }
 
@@ -168,10 +184,41 @@ class HeartRateController: ObservableObject {
         }
     }
 
+    actor elapsedTimeActor {
+        var tmpStartTime = ContinuousClock.now
+
+        func setTmpStartTime(newVal: ContinuousClock.Instant) {
+            tmpStartTime = newVal
+        }
+        func getTmpStartTime() -> ContinuousClock.Instant {
+            return tmpStartTime
+        }
+    }
+
+    func incrementInZoneTime(val: Duration) {
+        inZoneTime += val
+    }
+
+    func incrementOutOfZoneTime(val: Duration) {
+        outOfZoneTime += val
+    }
+
     func startTimer() {
+        let boundaries = self.calculateZoneBoundaries()
+        let tmpStartTime = elapsedTimeActor()
+
         self.timer = Timer.scheduledTimer(withTimeInterval: 4, repeats: true) {(timer) in
             Task {
                 await self.getHeartRate()
+
+                if await !(boundaries.lower...boundaries.upper).contains(self.heartRate) {
+                    await self.incrementOutOfZoneTime(val: tmpStartTime.tmpStartTime.duration(to: ContinuousClock.now))
+                }
+                else {
+                    await self.incrementInZoneTime(val: tmpStartTime.tmpStartTime.duration(to: ContinuousClock.now))
+                }
+
+                await tmpStartTime.setTmpStartTime(newVal: ContinuousClock.now)
             }
         }
     }
@@ -195,6 +242,13 @@ class HeartRateController: ObservableObject {
         self.timer?.invalidate()
         isWorkoutStarted = false
         print("Timer has been invalidated")
+        totalWorkoutTime = inZoneTime + outOfZoneTime
+        let workoutRatio: Double = Double(inZoneTime / totalWorkoutTime)
+        Mixpanel.mainInstance().track(event: "Workout ratio", properties: [
+            "Ratio": "\(workoutRatio)",
+            "In-zone time": "\(inZoneTime)",
+            "Total workout time": "\(totalWorkoutTime)"
+        ])
     }
 
 }
