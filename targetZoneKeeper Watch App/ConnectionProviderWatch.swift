@@ -9,6 +9,8 @@ import Foundation
 import WatchConnectivity
 import SwiftUI
 
+import Mixpanel
+
 class ConnectionProviderWatch: NSObject, WCSessionDelegate {
 
     static let shared = ConnectionProviderWatch()
@@ -80,6 +82,10 @@ class ConnectionProviderWatch: NSObject, WCSessionDelegate {
                             self.settingsDemonstration?.haptic = translateHaptic(haptic: result)
                             self.settingsDemonstration?.hapticName = result.rawValue
                         } catch {
+                            Mixpanel.mainInstance().track(event: "Exceptions", properties: [
+                                "Source": "ConnectionProviderWatch class - session()",
+                                "Description ": "Error while decoding userInfo data: \(error)"
+                            ])
                             print("Error while decoding userInfo data: \(error)")
                         }
                     }
@@ -130,7 +136,11 @@ class ConnectionProviderWatch: NSObject, WCSessionDelegate {
                 }
             }
         } catch {
-            print("sendSettings: error encoding json: \(error)")
+            Mixpanel.mainInstance().track(event: "Exceptions", properties: [
+                "Source": "ConnectionProviderWatch class - sendSettings()",
+                "Description ": "Error encoding json: \(error)"
+            ])
+            print("sendSettings: Error encoding json: \(error)")
         }
     }
 

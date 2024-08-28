@@ -7,6 +7,8 @@
 
 import Foundation
 
+import Mixpanel
+
 class SettingsLoader: ObservableObject {
     @Published var settings: Settings
 
@@ -20,6 +22,10 @@ class SettingsLoader: ObservableObject {
                 let decoded = try decoder.decode(Settings.self, from: defaultSettings)
                 settings = decoded
             } catch {
+                Mixpanel.mainInstance().track(event: "Exceptions", properties: [
+                    "Source": "SettingsLoader class - init()",
+                    "Description ": "Error during decoding data from UserDefaults \(error)"
+                ])
                 print("Error during decoding data from UserDefaults \(error)")
                 settings = Settings()
             }

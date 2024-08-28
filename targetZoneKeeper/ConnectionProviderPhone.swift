@@ -8,6 +8,8 @@
 import Foundation
 import WatchConnectivity
 
+import Mixpanel
+
 class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
     static let shared = ConnectionProviderPhone()
 
@@ -91,7 +93,11 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
             mySession.transferUserInfo(["hapticDemo": ["hapticDemoIsRunning": active, "haptic": hapticData]])
             checkSessionStatus()
         } catch {
-            print("sendHapticDemo: error encoding json: \(error)")
+            Mixpanel.mainInstance().track(event: "Exceptions", properties: [
+                "Source": "ConnectionProviderPhone class - sendHapticDemo()",
+                "Description ": "Error encoding json: \(error)"
+            ])
+            print("sendHapticDemo: Error encoding json: \(error)")
         }
     }
 
@@ -102,7 +108,11 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
             mySession.transferUserInfo(["settings": data])
             checkSessionStatus()
         } catch {
-            print("sendSettings: error encoding json: \(error)")
+            Mixpanel.mainInstance().track(event: "Exceptions", properties: [
+                "Source": "ConnectionProviderPhone class - sendSettingsToWatch()",
+                "Description ": "Error encoding json: \(error)"
+            ])
+            print("sendSettings: Error encoding json: \(error)")
         }
     }
 }

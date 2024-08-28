@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import Mixpanel
+
 enum Views {
     case welcome
     case main
@@ -33,9 +35,16 @@ struct ContentView: View {
                     Text("\(settingsDemonstrationProvider.hapticName)\n")
                         .onChange(of: settingsDemonstrationProvider.haptic, initial: true) {
                             WKInterfaceDevice.current().play(settingsDemonstrationProvider.haptic)
+                            Mixpanel.mainInstance().track(event: "Settings", properties: [
+                                "Device": "Watch",
+                                "Setting type": "Haptic demonstartion",
+                                "Setting value": "\(settingsDemonstrationProvider.hapticName)"
+                            ])
                         }
                     Button("Try") {
                         WKInterfaceDevice.current().play(settingsDemonstrationProvider.haptic)
+                    }
+                    .onAppear() {
                     }
                 } else {
                     VStack {
@@ -54,6 +63,7 @@ struct ContentView: View {
                         Text(formatHeartRateBoundariesText())
                         Spacer()
                         Button("START") {
+                            Mixpanel.mainInstance().track(event: "Start workout")
                             currentView = .main
                         }
                     }
@@ -105,6 +115,7 @@ struct ContentView: View {
                 Spacer()
                 Button("STOP") {
                     heartRateController.stopActivity()
+                    Mixpanel.mainInstance().track(event: "Stop workout")
                     currentView = .welcome
                 }
             }

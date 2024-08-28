@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		F315EF512C001DB4006BC23E /* SettingsDemonstrationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F315EF502C001DB4006BC23E /* SettingsDemonstrationProvider.swift */; };
+		F31BEAD42C783BF000D9A9B9 /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = F31BEAD32C783BF000D9A9B9 /* Mixpanel */; };
 		F3227DB52BDC66DD0031D823 /* ConnectionProviderPhone.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3227DB42BDC66DD0031D823 /* ConnectionProviderPhone.swift */; };
 		F3227DB72BE0188A0031D823 /* ConnectionProviderWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3227DB62BE0188A0031D823 /* ConnectionProviderWatch.swift */; };
 		F322DE752BF51BFD00BE9E9D /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F322DE742BF51BFD00BE9E9D /* Settings.swift */; };
@@ -29,6 +30,7 @@
 		F397B3AF2BE151F600765055 /* HeartRateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F397B3AE2BE151F600765055 /* HeartRateController.swift */; };
 		F39D1CDF2C26422E007907E1 /* SettingsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39D1CDE2C26422E007907E1 /* SettingsLoader.swift */; };
 		F3BB981B2C0FADDB0080599A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F322DE742BF51BFD00BE9E9D /* Settings.swift */; };
+		F3D1B23E2C5C21940029F30C /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = F3D1B23D2C5C21940029F30C /* Mixpanel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F31BEAD42C783BF000D9A9B9 /* Mixpanel in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +143,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3D1B23E2C5C21940029F30C /* Mixpanel in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +288,9 @@
 				F37CB3952BDB2D8900BECFEB /* PBXTargetDependency */,
 			);
 			name = targetZoneKeeper;
+			packageProductDependencies = (
+				F31BEAD32C783BF000D9A9B9 /* Mixpanel */,
+			);
 			productName = targetZoneKeeper;
 			productReference = F37CB36C2BDB2D8800BECFEB /* targetZoneKeeper.app */;
 			productType = "com.apple.product-type.application";
@@ -337,6 +344,9 @@
 			dependencies = (
 			);
 			name = "targetZoneKeeper Watch App";
+			packageProductDependencies = (
+				F3D1B23D2C5C21940029F30C /* Mixpanel */,
+			);
 			productName = "targetZoneKeeper Watch App";
 			productReference = F37CB3922BDB2D8900BECFEB /* targetZoneKeeper Watch App.app */;
 			productType = "com.apple.product-type.application";
@@ -412,7 +422,7 @@
 				};
 			};
 			buildConfigurationList = F37CB3672BDB2D8800BECFEB /* Build configuration list for PBXProject "targetZoneKeeper" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 15.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -420,6 +430,9 @@
 				Base,
 			);
 			mainGroup = F37CB3632BDB2D8800BECFEB;
+			packageReferences = (
+				F3A9D5942C598C710069FF09 /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
+			);
 			productRefGroup = F37CB36D2BDB2D8800BECFEB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1073,6 +1086,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F3A9D5942C598C710069FF09 /* XCRemoteSwiftPackageReference "mixpanel-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mixpanel/mixpanel-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F31BEAD32C783BF000D9A9B9 /* Mixpanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F3A9D5942C598C710069FF09 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
+			productName = Mixpanel;
+		};
+		F3D1B23D2C5C21940029F30C /* Mixpanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F3A9D5942C598C710069FF09 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
+			productName = Mixpanel;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F37CB3642BDB2D8800BECFEB /* Project object */;
 }

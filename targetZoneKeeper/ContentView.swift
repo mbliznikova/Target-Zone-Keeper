@@ -8,6 +8,8 @@
 import SwiftUI
 import Combine
 
+import Mixpanel
+
 struct ContentView: View {
 
     @ObservedObject var settingsLoader: SettingsLoader
@@ -77,6 +79,11 @@ struct ContentView: View {
                             zoneAlert: $settingsLoader.settings.fasterHaptic.value,
                             onSelect: {
                                 ConnectionProviderPhone.shared.sendHapticDemo(active: true, haptic: settingsLoader.settings.fasterHaptic.value)
+                                Mixpanel.mainInstance().track(event: "Settings", properties: [
+                                    "Device": "Phone",
+                                    "Setting type": "Haptic demonstartion",
+                                    "Setting value": "\(settingsLoader.settings.fasterHaptic.value.rawValue)"
+                                ])
                             }, onListDisappear: {
                                 ConnectionProviderPhone.shared.sendHapticDemo(active: false)
                                 settingsLoader.settings.fasterHaptic.updateTime()
@@ -97,6 +104,11 @@ struct ContentView: View {
                             zoneAlert: $settingsLoader.settings.inZoneHaptic.value,
                             onSelect: {
                                 ConnectionProviderPhone.shared.sendHapticDemo(active: true, haptic: settingsLoader.settings.inZoneHaptic.value)
+                                Mixpanel.mainInstance().track(event: "Settings", properties: [
+                                    "Device": "Phone",
+                                    "Setting type": "Haptic demonstartion",
+                                    "Setting value": "\(settingsLoader.settings.inZoneHaptic.value.rawValue)"
+                                ])
                             }, onListDisappear: {
                                 ConnectionProviderPhone.shared.sendHapticDemo(active: false)
                                 settingsLoader.settings.inZoneHaptic.updateTime()
@@ -116,6 +128,11 @@ struct ContentView: View {
                             zoneAlert: $settingsLoader.settings.slowerHaptic.value,
                             onSelect: {
                                 ConnectionProviderPhone.shared.sendHapticDemo(active: true, haptic: settingsLoader.settings.slowerHaptic.value)
+                                Mixpanel.mainInstance().track(event: "Settings", properties: [
+                                    "Device": "Phone",
+                                    "Setting type": "Haptic demonstartion",
+                                    "Setting value": "\(settingsLoader.settings.slowerHaptic.value.rawValue)"
+                                ])
                             }, onListDisappear: {
                                 ConnectionProviderPhone.shared.sendHapticDemo(active: false)
                                 settingsLoader.settings.slowerHaptic.updateTime()
@@ -133,6 +150,11 @@ struct ContentView: View {
                     Toggle("In-zone haptic alerts?", isOn: $settingsLoader.settings.ifInZoneHaptics.value)
                         .onChange(of: settingsLoader.settings.ifInZoneHaptics.value) {
                             settingsLoader.settings.ifInZoneHaptics.updateTime()
+                            Mixpanel.mainInstance().track(event: "Settings", properties: [
+                                "Device": "Phone",
+                                "Setting type": "In-zone hapric alert",
+                                "Setting value": "\(settingsLoader.settings.ifInZoneHaptics.value)"
+                            ])
                             sendToWatchAndSave()
                         }
                 })
@@ -142,6 +164,11 @@ struct ContentView: View {
                             .onChange(of: belowZoneColor) {
                                 settingsLoader.settings.belowZoneColor.update(value: resolveColor(color: belowZoneColor))
                                 sendToWatchAndSave()
+                                Mixpanel.mainInstance().track(event: "Settings", properties: [
+                                    "Device": "Phone",
+                                    "Setting type": "Color settings - below zone",
+                                    "Setting value": "\(resolveColor(color: belowZoneColor))"
+                                ])
                             }
                     }
                     HStack {
@@ -149,12 +176,22 @@ struct ContentView: View {
                             .onChange(of: inZoneColor) {
                                 settingsLoader.settings.inZoneColor.update(value: resolveColor(color: inZoneColor))
                                 sendToWatchAndSave()
+                                Mixpanel.mainInstance().track(event: "Settings", properties: [
+                                    "Device": "Phone",
+                                    "Setting type": "Color settings - in zone",
+                                    "Setting value": "\(resolveColor(color: inZoneColor))"
+                                ])
                             }
                     }
                     HStack {
                         ColorPicker("Above target zone", selection: $aboveZoneColor)
                             .onChange(of: aboveZoneColor) {
                                 settingsLoader.settings.aboveZoneColor.update(value: resolveColor(color: aboveZoneColor))
+                                Mixpanel.mainInstance().track(event: "Settings", properties: [
+                                    "Device": "Phone",
+                                    "Setting type": "Color settings - above zone",
+                                    "Setting value": "\(resolveColor(color: aboveZoneColor))"
+                                ])
                                 sendToWatchAndSave()
                             }
                     }
@@ -162,6 +199,12 @@ struct ContentView: View {
             }
             .navigationTitle("Settings")
         })
+        .onAppear() {
+            Mixpanel.mainInstance().track(event: "Settings", properties: [
+                "Device": "Phone",
+                "Setting type": "General settings"
+            ])
+        }
     }
 }
 
@@ -193,6 +236,12 @@ struct HapticTypesView: View {
         }
         .onDisappear() {
             onListDisappear()
+        }
+        .onAppear() {
+            Mixpanel.mainInstance().track(event: "Settings", properties: [
+                "Device": "Phone",
+                "Setting type": "Haptic demonstartion - list"
+            ])
         }
     }
 }
