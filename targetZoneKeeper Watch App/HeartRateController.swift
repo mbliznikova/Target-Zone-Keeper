@@ -32,6 +32,7 @@ class HeartRateController: ObservableObject {
     var maxHeartRate: Int?
 
     var timer: Timer?
+    var timerInterval: TimeInterval = 4
 
     var inZoneTime: Duration = Duration(secondsComponent: 0, attosecondsComponent: 0)
     var outOfZoneTime: Duration = Duration(secondsComponent: 0, attosecondsComponent: 0)
@@ -104,8 +105,6 @@ class HeartRateController: ObservableObject {
 
     func startWorkout() {
         print("Starting workout")
-
-        Mixpanel.mainInstance().track(event: "Start workout")
 
         do {
             workoutSession = try HKWorkoutSession(healthStore: hkObject!, configuration: workoutConfig)
@@ -207,7 +206,7 @@ class HeartRateController: ObservableObject {
         let boundaries = self.calculateZoneBoundaries()
         let tmpStartTime = elapsedTimeActor()
 
-        self.timer = Timer.scheduledTimer(withTimeInterval: 4, repeats: true) {(timer) in
+        self.timer = Timer.scheduledTimer(withTimeInterval: timerInterval, repeats: true) {(timer) in
             Task {
                 await self.getHeartRate()
 
@@ -242,8 +241,19 @@ class HeartRateController: ObservableObject {
         self.timer?.invalidate()
         isWorkoutStarted = false
         print("Timer has been invalidated")
-        totalWorkoutTime = inZoneTime + outOfZoneTime
-        let workoutRatio: Double = Double(inZoneTime / totalWorkoutTime)
+
+        var inZoneRounded = inZoneTime
+        inZoneRounded += .milliseconds(100)
+
+        var outOfZoneRounded = outOfZoneTime
+        outOfZoneRounded += .milliseconds(100)
+
+        totalWorkoutTime = inZoneRounded + outOfZoneRounded
+        let workoutRatio: Double = Double(inZoneRounded / totalWorkoutTime)
+
+        inZoneTime = inZoneRounded
+        outOfZoneTime = outOfZoneRounded
+
         Mixpanel.mainInstance().track(event: "Workout ratio", properties: [
             "Ratio": "\(workoutRatio)",
             "In-zone time": "\(inZoneTime)",

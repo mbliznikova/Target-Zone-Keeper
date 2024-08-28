@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Foundation
 @testable import targetZoneKeeper_Watch_App
 
 final class targetZoneKeeper_Watch_AppTests: XCTestCase {
@@ -65,8 +66,10 @@ final class targetZoneKeeper_Watch_AppTests: XCTestCase {
         XCTAssertEqual(boundaries.1, expectedUpperBoundary)
     }
 
-    @MainActor func testStartTimerMeasuresElapsedWorkoutTimeCorrectly() async throws {
+    @MainActor func testStartTimerMeasuresElapsedWorkoutTimeCorrectly4SecondsTimerInterval() async throws {
         let controller = createHeartRateController()
+
+        XCTAssertEqual(controller.timerInterval, 4)
 
         controller.settings.heartRateZone.value = .zone1
         controller.maxHeartRate = 182
@@ -78,22 +81,41 @@ final class targetZoneKeeper_Watch_AppTests: XCTestCase {
         controller.startWorkout()
         controller.startTimer()
 
-        controller.heartRate = belowZoneHeartRate
-        try await Task.sleep(nanoseconds: 10_000_000_000)
+        for _ in 1...10 {
+            controller.heartRate = belowZoneHeartRate
+            try await Task.sleep(nanoseconds: 2_000_000_000)
+        }
 
-        for _ in 1...5 {
+        for _ in 1...10 {
             controller.heartRate = inZoneHeartRate
             try await Task.sleep(nanoseconds: 4_000_000_000)
         }
 
-        controller.heartRate = aboveZoneHeartRate
-        try await Task.sleep(nanoseconds: 5_000_000_000)
+        for _ in 1...10 {
+            controller.heartRate = aboveZoneHeartRate
+            try await Task.sleep(nanoseconds: 4_000_000_000)
+        }
+
+        for _ in 1...10 {
+            controller.heartRate = inZoneHeartRate
+            try await Task.sleep(nanoseconds: 4_000_000_000)
+        }
+
+        for _ in 1...10 {
+            controller.heartRate = aboveZoneHeartRate
+            try await Task.sleep(nanoseconds: 6_000_000_000)
+        }
+
+        for _ in 1...10 {
+            controller.heartRate = inZoneHeartRate
+            try await Task.sleep(nanoseconds: 2_000_000_000)
+        }
 
         controller.stopActivity()
 
-        print("RESULTS ARE: total \(controller.totaltimeElapsed.components.seconds), in zone \(controller.inZoneTime.components.seconds), out of zone \(controller.outOfZoneTime.components.seconds)")
-
-        // TODO: add asserts here
+        XCTAssertEqual(controller.inZoneTime.components.seconds, 100)
+        XCTAssertEqual(controller.outOfZoneTime.components.seconds, 120)
+        XCTAssertEqual(controller.totalWorkoutTime.components.seconds, 220)
     }
 
     @MainActor func testCheckTargetWhenBelowZoneSetsBelowZoneMessage() {
@@ -140,7 +162,6 @@ final class targetZoneKeeper_Watch_AppTests: XCTestCase {
         print(controller.color)
         XCTAssertEqual(controller.message, "SLOWER")
     }
-
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
