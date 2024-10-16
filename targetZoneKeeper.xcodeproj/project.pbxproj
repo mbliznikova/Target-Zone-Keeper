@@ -27,6 +27,7 @@
 		F37CB3A92BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3A82BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppTests.swift */; };
 		F37CB3B32BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3B22BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITests.swift */; };
 		F37CB3B52BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB3B42BDB2D8A00BECFEB /* targetZoneKeeper_Watch_AppUITestsLaunchTests.swift */; };
+		F3850D482C824B59001D83B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F37CB3732BDB2D8900BECFEB /* Assets.xcassets */; };
 		F397B3AF2BE151F600765055 /* HeartRateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F397B3AE2BE151F600765055 /* HeartRateController.swift */; };
 		F39D1CDF2C26422E007907E1 /* SettingsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39D1CDE2C26422E007907E1 /* SettingsLoader.swift */; };
 		F3BB981B2C0FADDB0080599A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F322DE742BF51BFD00BE9E9D /* Settings.swift */; };
@@ -476,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F37CB39F2BDB2D8A00BECFEB /* Preview Assets.xcassets in Resources */,
+				F3850D482C824B59001D83B5 /* Assets.xcassets in Resources */,
 				F37CB39C2BDB2D8A00BECFEB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -620,8 +622,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -683,8 +688,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Distribution: Margarita Bliznikova (7B5J3Q4N7K)";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -710,27 +718,31 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "targetZoneKeeper Watch App/targetZoneKeeper Watch App.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_ASSET_PATHS = "\"targetZoneKeeper Watch App/Preview Content\"";
 				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "targetZoneKeeper-Watch-App-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = targetZoneKeeper;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your heart rate data is used to notify you if you are in target heart rate zone during workout";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your heart rate data is used to notify you if you are in target heart rate zone during workout";
+				INFOPLIST_KEY_CFBundleDisplayName = "Target Zone Keeper";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your heart rate, energy and date of birth data is used to notify you if you are in target heart rate zone during workout. This data also helps to create and record your workout sessions.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your heart rate, energy and date of birth data is used to notify you if you are in target heart rate zone during workout. This data also helps to create and record your workout sessions.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = Margo.targetZoneKeeper;
-				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = Margo.targetZoneKeeperBeta;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeper.watchkitapp;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeperBeta.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -745,27 +757,31 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "targetZoneKeeper Watch App/targetZoneKeeper Watch App.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_ASSET_PATHS = "\"targetZoneKeeper Watch App/Preview Content\"";
 				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "targetZoneKeeper-Watch-App-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = targetZoneKeeper;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your heart rate data is used to notify you if you are in target heart rate zone during workout";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your heart rate data is used to notify you if you are in target heart rate zone during workout";
+				INFOPLIST_KEY_CFBundleDisplayName = "Target Zone Keeper";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your heart rate, energy and date of birth data is used to notify you if you are in target heart rate zone during workout. This data also helps to create and record your workout sessions.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your heart rate, energy and date of birth data is used to notify you if you are in target heart rate zone during workout. This data also helps to create and record your workout sessions.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = Margo.targetZoneKeeper;
-				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = Margo.targetZoneKeeperBeta;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeper.watchkitapp;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeperBeta.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -781,14 +797,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=iphoneos*]" = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_ASSET_PATHS = "\"targetZoneKeeper/Preview Content\"";
 				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = targetZoneKeeper;
+				INFOPLIST_KEY_CFBundleDisplayName = "Target Zone Keeper";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -799,9 +818,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeper;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeperBeta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -818,14 +838,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=iphoneos*]" = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_ASSET_PATHS = "\"targetZoneKeeper/Preview Content\"";
 				DEVELOPMENT_TEAM = 7B5J3Q4N7K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = targetZoneKeeper;
+				INFOPLIST_KEY_CFBundleDisplayName = "Target Zone Keeper";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -836,9 +859,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeper;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Margo.targetZoneKeeperBeta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

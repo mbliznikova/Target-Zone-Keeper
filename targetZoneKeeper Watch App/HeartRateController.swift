@@ -32,7 +32,7 @@ class HeartRateController: ObservableObject {
     var maxHeartRate: Int?
 
     var timer: Timer?
-    var timerInterval: TimeInterval = 4
+    var timerInterval: TimeInterval = 2
 
     var inZoneTime: Duration = Duration(secondsComponent: 0, attosecondsComponent: 0)
     var outOfZoneTime: Duration = Duration(secondsComponent: 0, attosecondsComponent: 0)
