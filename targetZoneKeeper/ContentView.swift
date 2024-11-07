@@ -70,10 +70,10 @@ struct ContentView: View {
                             Text("Start workout")
                                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                         }
-                        .alert("Watch app is unreachable", isPresented: $isAlertShown) {
+                        .alert("The app on Apple Watch is unreachable", isPresented: $isAlertShown) {
                                     Button("OK") { }
                         } message: {
-                            Text("Make sure your watch is paired and app is open on both devices.\n\n Or, start the workout directly from your watch.")
+                            Text("Make sure your Apple Watch is connected to your iPhone and the app is open on both devices.\n\n Or, start the workout directly from the app on your Apple Watch.")
                         }
                         .buttonStyle(.borderedProminent)
                     }
