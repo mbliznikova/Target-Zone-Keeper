@@ -79,21 +79,18 @@ class HeartRateController: ObservableObject {
             }
         }
 
-        do {
-            let birthday = try hkObject?.dateOfBirthComponents()
-            let calendar = Calendar.current
-            let currentYear = calendar.component(.year, from: Date())
-            let currentMonth = calendar.component(.month, from: Date())
-            // TODO: default age?
-            userAge = currentYear - (birthday?.year ?? 2000) + (currentMonth >= birthday?.month ?? 1 ? 0 : -1)
-            maxHeartRate = Int(208.0 - (0.7 * Double(userAge ?? currentYear - 2000)))
-        } catch let error {
-            Mixpanel.mainInstance().track(event: "Exceptions", properties: [
-                "Source": "HeartRateController class - init()",
-                "Description ": "An error occured while getting user's date of birth: \(error.localizedDescription)"
-            ])
-            print("An error occured while getting user's date of birth: \(error.localizedDescription)")
+        var birthday = try? hkObject?.dateOfBirthComponents()
+        if birthday == nil {
+            birthday = DateComponents(year: 1990, month: 1, day: 1)
         }
+
+        let calendar = Calendar.current
+        let currentYear = calendar.component(.year, from: Date())
+        let currentMonth = calendar.component(.month, from: Date())
+        userAge = currentYear - (birthday?.year ?? 1990) + (currentMonth >= birthday?.month ?? 1 ? 0 : -1)
+        maxHeartRate = Int(208.0 - (0.7 * Double(userAge ?? currentYear - 1990)))
+        print("Birthday is \(birthday!)")
+
         if let settingsData = UserDefaults.standard.data(forKey: "settings") {
             let decoder = JSONDecoder()
             if let decoded = try? decoder.decode(Settings.self, from: settingsData) {
