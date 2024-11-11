@@ -16,6 +16,8 @@ struct ContentView: View {
 
     @Environment(\.self) var environment
 
+    @State private var isAlertShown = false
+
     @State private var belowZoneColor: Color
     @State private var inZoneColor: Color
     @State private var aboveZoneColor: Color
@@ -34,17 +36,11 @@ struct ContentView: View {
             opacity: Double(resolvedColor.opacity))
     }
 
-    init(settingsLoader: SettingsLoader) {
-        self.settingsLoader = settingsLoader
-
-        belowZoneColor = settingsLoader.settings.belowZoneColor.value.toStandardColor()
-        inZoneColor = settingsLoader.settings.inZoneColor.value.toStandardColor()
-        aboveZoneColor = settingsLoader.settings.aboveZoneColor.value.toStandardColor()
-
+    var switchToiPhoneView: some View {
+        Text("You're using \(UIDevice.current.model). \nPlease use iPhone with paired Apple Watch.")
     }
-    
-    var body: some View {
 
+    var settingsView: some View {
         NavigationStack(root: {
             Form {
                 Section(header: Text("Set target zone"), content: {
@@ -65,9 +61,19 @@ struct ContentView: View {
                         // TODO: check if another device is reachable and session is active
                         Button(action: {
                             ConnectionProviderPhone.shared.sendStartWorkout()
+                            if !ConnectionProviderPhone.shared.mySession.isReachable {
+                                isAlertShown = true
+                            } else {
+                                isAlertShown = false
+                            }
                         }) {
                             Text("Start workout")
                                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                        }
+                        .alert("The app on Apple Watch is unreachable", isPresented: $isAlertShown) {
+                                    Button("OK") { }
+                        } message: {
+                            Text("Make sure your Apple Watch is connected to your iPhone and the app is open on both devices.\n\n Or, start the workout directly from the app on your Apple Watch.")
                         }
                         .buttonStyle(.borderedProminent)
                     }
@@ -199,11 +205,28 @@ struct ContentView: View {
             }
             .navigationTitle("Settings")
         })
-        .onAppear() {
-            Mixpanel.mainInstance().track(event: "Settings", properties: [
-                "Device": "Phone",
-                "Setting type": "General settings"
-            ])
+    }
+
+    init(settingsLoader: SettingsLoader) {
+        self.settingsLoader = settingsLoader
+
+        belowZoneColor = settingsLoader.settings.belowZoneColor.value.toStandardColor()
+        inZoneColor = settingsLoader.settings.inZoneColor.value.toStandardColor()
+        aboveZoneColor = settingsLoader.settings.aboveZoneColor.value.toStandardColor()
+
+    }
+
+    var body: some View {
+        if UIDevice.current.model != "iPhone" {
+            switchToiPhoneView
+        } else {
+            settingsView
+            .onAppear() {
+                Mixpanel.mainInstance().track(event: "Settings", properties: [
+                    "Device": "Phone",
+                    "Setting type": "General settings"
+                ])
+            }
         }
     }
 }

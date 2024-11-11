@@ -9,6 +9,7 @@ import Foundation
 import WatchConnectivity
 
 import Mixpanel
+import UIKit
 
 class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
     static let shared = ConnectionProviderPhone()
@@ -64,10 +65,14 @@ class ConnectionProviderPhone: NSObject, WCSessionDelegate, ObservableObject {
     private override init() {
         self.mySession = WCSession.default
         super.init()
-        assert(WCSession.isSupported(), "WCSsession should be supported!")
-        self.mySession.delegate = self
-        self.mySession.activate()
-        print("ConnectionProviderPhone - init(). Session reachable: \(self.mySession.isReachable)")
+        if UIDevice.current.model == "iPhone" {
+            assert(WCSession.isSupported(), "WCSsession should be supported!")
+            self.mySession.delegate = self
+            self.mySession.activate()
+            print("ConnectionProviderPhone - init(). Session reachable: \(self.mySession.isReachable)")
+        } else {
+            print("The current device is \(UIDevice.current.model). Please use iPhone with paired Apple Watch")
+        }
     }
 
     func checkSessionStatus() {
