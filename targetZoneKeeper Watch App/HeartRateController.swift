@@ -17,8 +17,12 @@ class HeartRateController: ObservableObject {
     @Published var settings: Settings = Settings()
 
     @Published var heartRate: Int = 0
-    
+
     @Published var isWorkoutStarted = false
+
+    @Published var message: String = ""
+
+    @Published var color: Color = Color.black
 
     var phoneData = ConnectionProviderWatch.shared
 
@@ -37,9 +41,6 @@ class HeartRateController: ObservableObject {
     var inZoneTime: Duration = Duration(secondsComponent: 0, attosecondsComponent: 0)
     var outOfZoneTime: Duration = Duration(secondsComponent: 0, attosecondsComponent: 0)
     var totalWorkoutTime: Duration = Duration(secondsComponent: 0, attosecondsComponent: 0)
-
-    var message: String = ""
-    var color: Color = Color.black
 
     func calculateZoneBoundaries() -> (lower: Int, upper: Int) {
         let maxHeartRateValue = maxHeartRate ?? 190
@@ -64,6 +65,10 @@ class HeartRateController: ObservableObject {
             multiplierUpper = 1
         }
         return (Int(multiplierLower * Double(maxHeartRateValue)), Int(multiplierUpper * Double(maxHeartRateValue)))
+    }
+
+    func updateHeartRate(newValue: Int) {
+        heartRate = newValue
     }
 
     init() {
@@ -135,9 +140,9 @@ class HeartRateController: ObservableObject {
             Task {
                 // TODO: add error handling
                 if let result = result?.first as? HKQuantitySample {
-                    self.heartRate = Int(result.quantity.doubleValue(for: HKUnit(from: "count/s")) * 60)
-                    print("Heart rate is \(self.heartRate)")
-                    self.checkTarget()
+                    await self.updateHeartRate(newValue: Int(result.quantity.doubleValue(for: HKUnit(from: "count/s")) * 60))
+                    await print("Heart rate is \(self.heartRate)")
+                    await self.checkTarget()
                 }
             }
         }
